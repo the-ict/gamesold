@@ -1,0 +1,13 @@
+.infiniteAnimation {
+    animation: infiniteScroll 50s linear infinite;
+}
+
+
+@keyframes infiniteScroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
