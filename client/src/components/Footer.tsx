@@ -1,12 +1,16 @@
+import { useState } from "react";
 import {
     FaFacebook,
     FaInstagram,
     FaLinkedin,
     FaMoon,
+    FaSun,
     FaTwitter,
 } from "react-icons/fa";
 
 export default function Footer() {
+    const [darkMode, setDarkMode] = useState<boolean>(false)
+
     return (
         <div className="flex items-center py-5 mt-10 justify-center">
             <div className="w-[1200px]">
@@ -23,15 +27,21 @@ export default function Footer() {
                         <li className="cursor-pointer">Legal</li>
                         <li className="cursor-pointer">Privacy Policy</li>
                         <li className="cursor-pointer">Help Center</li>
-                        <li>
-                            <FaMoon />
+                        <li className="cursor-pointer">
+                            {
+                                darkMode ? (
+                                    <FaMoon onClick={() => setDarkMode(false)} />
+                                ) : (
+                                    <FaSun onClick={() => setDarkMode(true)} />
+                                )
+                            }
                         </li>
                     </ul>
                     <div className="flex items-center gap-5">
-                        <FaInstagram className="cursor-pointer" size={25}/>
-                        <FaFacebook className="cursor-pointer" size={25}/>
-                        <FaLinkedin className="cursor-pointer" size={25}/>
-                        <FaTwitter className="cursor-pointer" size={25}/>
+                        <FaInstagram className="cursor-pointer" size={25} />
+                        <FaFacebook className="cursor-pointer" size={25} />
+                        <FaLinkedin className="cursor-pointer" size={25} />
+                        <FaTwitter className="cursor-pointer" size={25} />
                     </div>
                 </div>
             </div>
