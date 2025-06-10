@@ -9,6 +9,7 @@ export default function Hero() {
           <div>
             <h1 className="text-5xl font-bold mt-10">Game Deals Beyond Borders</h1>
             <p className="text-xl mt-5">Fresh deals drop 24/7. Miss it? it's gone</p>
+            <button className="p-2 border bg-red-400 rounded-[10px] font-bold text-white">Sign up now</button>
           </div>
           <FaPlaystation size={400} />
         </div>
