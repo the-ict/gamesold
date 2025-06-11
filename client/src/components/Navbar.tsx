@@ -7,7 +7,7 @@ export default function Navbar() {
     const [searchForm, setSearchForm] = useState<boolean>(false)
     
     window.addEventListener("scroll", () => {
-        if(window.scrollY > (window.innerHeight - 200)) {
+        if(window.scrollY > 200) {
             setScrolled(true)
         } else {
             setScrolled(false)
@@ -15,8 +15,8 @@ export default function Navbar() {
     })
 
     return (
-        <div className={`flex items-center w-full justify-center ${scrolled ? "fixed bg-white transition-all border-b border-gray-200 z-50" : ""}`}>
-            <div className="w-[1200px] py-3 flex items-center justify-between">
+        <div className={`flex bg-[#222] text-white items-center w-full justify-center ${scrolled ? "fixed transition-all z-50" : ""}`}>
+            <div className="w-[1200px] py-5 flex items-center justify-between">
                 <div className="flex items-center gap-5">
                     <h1 className="text-2xl font-bold cursor-pointer">GameSold</h1>
                     <form onSubmit={(e) => {
@@ -32,7 +32,7 @@ export default function Navbar() {
                         <option value="ar">Arabic</option>
                     </select>
 
-                    <button className="cursor-pointer bg-gray-200 p-2 text-red-400 font-bold transition-all hover:bg-red-400 hover:text-white rounded-full">Sign In / Sign Up</button>
+                    <button className="cursor-pointer bg-red-500 px-3 py-3 text-white font-bold transition-all hover:bg-red-400 hover:text-white rounded-full">Sign In / Sign Up</button>
                 </div>
             </div>
             {

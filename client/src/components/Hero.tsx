@@ -2,14 +2,14 @@ import { FaPlaystation } from "react-icons/fa";
 
 export default function Hero() {
   return (
-    <div className="bg-cover justify-center flex">
+    <div className="bg-cover justify-center flex bg-[#0e0e11] text-white">
 
-      <div className="w-[1200px] min-h-[calc(100vh-120px)] flex flex-col justify-between">
+      <div className="w-[1200px] min-h-[calc(100vh-80px)] flex flex-col justify-between">
         <div className="mt-10 flex justify-between items-center h-full">
           <div>
             <h1 className="text-5xl font-bold mt-10">Game Deals Beyond Borders</h1>
             <p className="text-xl mt-5">Fresh deals drop 24/7. Miss it? it's gone</p>
-            <button className="p-2 border bg-red-400 rounded-[10px] font-bold text-white">Sign up now</button>
+            <button className="p-2 border cursor-pointer bg-red-400 rounded-[10px] font-bold text-white px-5 py-3 mt-3">Sign up now</button>
           </div>
           <FaPlaystation size={400} />
         </div>

@@ -4,11 +4,12 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import SearchedForm from "./pages/SearchedForm";
 import SingleAccount from "./pages/SingleAccount";
+import Dashboard from "./pages/Dashboard"
 
 export default function App() {
   return (
     <div>
-      <Home />
+      <Register />
     </div>
   )
 }

@@ -7,7 +7,7 @@ export default function SingleAccount() {
     return (
         <>
             <Navbar />
-            <div className="flex items-center justify-center">
+            <div className="flex items-center justify-center bg-[#141414] text-white">
                 <div className="w-[1200px] mt-10">
                     <div className="flex gap-10">
                         <div className="w-[45%] h-[300px]">
@@ -42,8 +42,23 @@ export default function SingleAccount() {
                         </div>
                     </div>
 
+                    <div className="mt-10 p-5 bg-gray-200 text-black">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate ut, explicabo suscipit culpa animi quisquam non aut quos eaque harum adipisci, possimus neque consequatur illo autem ullam repellat vero. Necessitatibus!
+                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Mollitia nemo modi eius? Labore tempora ea reprehenderit? Dicta aperiam voluptatem eligendi? Adipisci quas exercitationem impedit. Unde ratione numquam voluptas quod delectus?
+                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Velit dolor mollitia sapiente corrupti, dignissimos ullam. Blanditiis vero consectetur officiis quae assumenda accusamus corrupti molestias at, ullam ad id aperiam! Reiciendis!
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis quod autem molestias voluptate libero sit modi non perferendis laudantium neque ipsum facilis veniam velit quasi doloremque alias nihil, quaerat Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta sed expedita corrupti odit doloribus delectus unde praesentium, reprehenderit ipsa quibusdam velit recusandae quo sunt hic magnam iste perspiciatis? Eligendi, laboreminima!
+                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Minus quam mollitia soluta illo aperiam aliquid saepe quas nisi ex eius dolorem ratione placeat tempore, enim doloribus, veniam fuga sit. Reiciendis?
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil, nisi. Provident tempora, quibusdam ab illum incidunt deleniti laboriosam quia blanditiis vel dolores eum nisi reprehenderit cumque fuga quae optio magni.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptatibus explicabo iste neque error distinctio architecto sapiente ut magnam reprehenderit. Incidunt distinctio temporibus aperiam voluptates consectetur autem, aliquam minus impedit aliquid.
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod nesciunt quaerat impedit expedita porro facere accusamus, sed quasi quae similique deleniti architecto amet? Vel modi earum deleniti dignissimos aspernatur ratione!
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aliquid dicta veritatis tempore sit illum, modi repudiandae ad quidem adipisci ipsam quod id, nobis, libero dolores corrupti magni. Aperiam, consectetur voluptates.
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos dolorum accusamus exercitationem inventore, alias, quaerat quo ea id, eveniet provident expedita iste quisquam animi eligendi magni obcaecati dolore assumenda dolor!
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum, iste itaque dicta nemo sapiente quisquam id mollitia consequuntur maxime sunt fuga quis obcaecati aliquam in incidunt dolore hic, ad amet.
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam molestiae pariatur cupiditate, voluptatem, id quibusdam magnam ad obcaecati tempora accusantium et impedit assumenda quisquam veritatis nobis error optio laboriosam tempore?
+                    </div>
+
                     <h1 className="text-3xl font-bold mt-10">Seller usernamening boshqa hisoblari</h1>
-                    <div className="max-w-full relative flex overflow-x-hidden">
+                    <div className="max-w-full relative flex py-10 overflow-x-hidden">
                         <FaArrowLeft size={25} className="absolute left-0 top-1/2 -translate-y-1/2 cursor-pointer" />
                         <div className="flex items-center gap-5 mt-10">
                             <div className="w-[285px] relative border h-[400px]">

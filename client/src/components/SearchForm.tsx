@@ -11,7 +11,7 @@ export default function SearchForm({setSearchForm}: {setSearchForm: (value: bool
                     type="text"
                     autoFocus
                     placeholder="Qidirish..."
-                    className="w-full h-full outline-none border-none"
+                    className="w-full h-full text-black outline-none border-none"
                     onKeyDown={(e) => {
                         if (e.key === 'Backspace' && !e.currentTarget.value) {
                             setSearchForm(false);

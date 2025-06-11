@@ -5,7 +5,6 @@ import TopSellers from "../components/TopSellers";
 import Trending from "../components/Trending";
 
 export default function Home () {
-    console.log("everything is ok now!")
     return (
         <div>
             <Navbar />
