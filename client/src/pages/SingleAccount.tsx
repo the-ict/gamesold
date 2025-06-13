@@ -2,11 +2,67 @@ import { FaArrowLeft, FaArrowRight, FaDiscord, FaFacebook, FaInstagram, FaTwitte
 import Navbar from "../components/Navbar";
 import { GrFavorite, GrLike } from "react-icons/gr";
 import Footer from "../components/Footer";
+import { BiMessage } from "react-icons/bi";
+import SidebarDrawer from "@/components/SidebarDrawer";
+import { useState } from "react";
+import AccountImage from "@/assets/background.jpeg";
+import UserAvatar from "@/assets/profile-avatar.svg";
+import AreYouSure from "@/components/AreYouSure";
+
 
 export default function SingleAccount() {
+    const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
+    const [showAreYouSure, setShowAreYouSure] = useState<boolean>(false);
     return (
         <>
             <Navbar />
+
+            {
+                showAreYouSure && (
+                    <AreYouSure
+                        onConfirm={() => {
+                            setShowAreYouSure(false);
+                            setSidebarOpen(false);
+                        }}
+                        onCancel={() => setShowAreYouSure(false)}
+                        message="Siz sotib olishni xohlaysizmi?"
+                    />
+                )
+            }
+
+            {
+                sidebarOpen && (
+                    <SidebarDrawer
+                        sidebarBackgroundColor="bg-white text-black"
+                        openAnimation={true} closeAnimation={false} sidebarName="Sotib olish" setSidebarOpen={setSidebarOpen} sidebarWidth="w-[400px]" sidebarSide="left-0">
+                        <div className="flex flex-col justify-between h-[95%]">
+                            <div className="flex items-center gap-5 mb-5 bg-[#13a13a] text-white p-5 rounded-[10px]">
+                                <img className="w-[50px] h-[50px] object-cover rounded-full cursor-pointer" src={UserAvatar} alt="" />
+                                <span>Sizning hisobingiz: <b>400.000so'm</b></span>
+                            </div>
+
+
+                            <div className="mt-3 w-full flex flex-col gap-2">
+                                <h1 className="w-full mt-5 text-2xl font-bold">Akkunt ma'lumotlari</h1>
+                                <img src={AccountImage} className="rounded-lg cursor-pointer" alt="account image" />
+                                <p>
+                                    <span>Akkunt raqami: <b>123456789</b></span>
+                                </p>
+                                <p>
+                                    <span>Akkunt platformasi: <b>Pubg mobile</b></span>
+                                </p>
+                                <p>
+                                    <span>Akkount narxi: <b>200.000so'm</b></span>
+                                </p>
+                            </div>
+
+                            <button onClick={() => setShowAreYouSure(true)} className="w-full cursor-pointer bg-[#13a13a] text-white p-3 rounded-[10px] font-bold hover:bg-[#0f8f0f] transition-all duration-300 ease-in-out">
+                                Sotib olish
+                            </button>
+                        </div>
+                    </SidebarDrawer>
+                )
+            }
             <div className="flex items-center justify-center bg-[#141414] text-white">
                 <div className="w-[1200px] mt-10">
                     <div className="flex gap-10">
@@ -23,7 +79,7 @@ export default function SingleAccount() {
                                 </div>
                                 <div className="flex items-center gap-5">
                                     <GrFavorite size={25} className="cursor-pointer" />
-                                    <GrLike size={25} className="cursor-pointer" />
+                                    <BiMessage size={25} className="cursor-pointer" />
                                 </div>
                             </div>
                             <p className="mt-3 w-[600px] line-clamp-4">
@@ -31,7 +87,9 @@ export default function SingleAccount() {
                                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla soluta eos asperiores quidem enim totam qui officiis voluptatum magni aut explicabo, culpa accusamus facilis ullam ut minima voluptas, alias maiores!
                             </p>
                             <div className="flex items-center gap-2 mt-5">
-                                <span className="p-2 border bg-green-500 font-bold px-5 cursor-pointer text-white rounded-[10px]">100$</span>
+                                <span onClick={() => {
+                                    setSidebarOpen(true);
+                                }} className="p-2 border bg-green-500 font-bold px-5 cursor-pointer text-white rounded-[10px]">100$</span>
                             </div>
                             <div className="flex items-center gap-5 mt-5">
                                 <FaInstagram className="cursor-pointer" size={25} />

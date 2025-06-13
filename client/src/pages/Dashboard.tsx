@@ -10,7 +10,7 @@ import NotFound from "@/assets/goldie-no-results.svg"
 import SidebarDrawer from "@/components/SidebarDrawer"
 
 export default function Dashboard() {
-    const [sidebarOpen, setSidebarOpen] = React.useState(true);
+    const [sidebarOpen, setSidebarOpen] = React.useState(false);
     return (
         <React.Fragment>
             <Navbar />
@@ -19,15 +19,19 @@ export default function Dashboard() {
                 <SidebarDrawer
                     openAnimation={true}
                     closeAnimation={!sidebarOpen}
-                    sidebarName="Dashboard"
+                    sidebarName="Sozlamalar"
                     setSidebarOpen={setSidebarOpen}
+                    sidebarWidth="w-[400px]"
+                    sidebarSide="left-0"
                 >
-                    <input type="text" placeholder="Tahallusingiz" />
-                    <input type="text" placeholder="Emailingiz" />
-                    <input type="text" placeholder="Eski parolingiz" />
-                    <input type="text" placeholder="Yangi parolingiz" />
-                    <input type="text" placeholder="Yangi parolni takrorlang" />
-                    <button>O'zgartirish</button>
+                    <div className="flex flex-col items-start justify-center gap-5 mt-[50%]">
+                        <input type="text" placeholder="Tahallusingiz" className="px-5 py-3 border-2 w-[100%]" autoFocus />
+                        <input type="text" placeholder="Emailingiz" className="px-5 py-3 border-2 w-[100%]" />
+                        <input type="text" placeholder="Eski parolingiz" className="px-5 py-3 border-2 w-[100%]" />
+                        <input type="text" placeholder="Yangi parolingiz" className="px-5 py-3 border-2 w-[100%]" />
+                        <input type="text" placeholder="Yangi parolni takrorlang" className="px-5 py-3 border-2 w-[100%]" />
+                        <button className="bg-blue-500 w-full cursor-pointer text-white px-4 py-2 rounded">O'zgartirish</button>
+                    </div>
                 </SidebarDrawer>
             }
             <div className={`w-screen h-[100px] relative flex items-center justify-center`} style={{ backgroundImage: `url(${BackgroundImage})`, backgroundSize: "cover", backgroundPosition: 'center', backgroundRepeat: 'repeat-y' }}>
@@ -41,7 +45,7 @@ export default function Dashboard() {
                             </div>
                         </div>
 
-                        <SlSettings className="text-gray-400 cursor-pointer hover:text-white transition-colors duration-300" size={30} />
+                        <SlSettings  onClick={() => setSidebarOpen(true)} className="text-gray-400 cursor-pointer hover:text-white transition-colors duration-300" size={30} />
                     </div>
                     <div className="flex items-center gap-5 mt-3">
                         <span className="text-gray-400">ID: 123456789</span>

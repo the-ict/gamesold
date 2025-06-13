@@ -5,11 +5,12 @@ import Register from "./pages/Register";
 import SearchedForm from "./pages/SearchedForm";
 import SingleAccount from "./pages/SingleAccount";
 import Dashboard from "./pages/Dashboard"
+import Messages from "./components/Messages";
 
 export default function App() {
   return (
     <div>
-      <Dashboard/>
+      <Messages/>
     </div>
   )
 }
