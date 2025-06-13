@@ -7,11 +7,29 @@ import Footer from "@/components/Footer"
 import { BiEdit } from "react-icons/bi"
 
 import NotFound from "@/assets/goldie-no-results.svg"
+import SidebarDrawer from "@/components/SidebarDrawer"
 
 export default function Dashboard() {
+    const [sidebarOpen, setSidebarOpen] = React.useState(true);
     return (
         <React.Fragment>
             <Navbar />
+            {
+                sidebarOpen &&
+                <SidebarDrawer
+                    openAnimation={true}
+                    closeAnimation={!sidebarOpen}
+                    sidebarName="Dashboard"
+                    setSidebarOpen={setSidebarOpen}
+                >
+                    <input type="text" placeholder="Tahallusingiz" />
+                    <input type="text" placeholder="Emailingiz" />
+                    <input type="text" placeholder="Eski parolingiz" />
+                    <input type="text" placeholder="Yangi parolingiz" />
+                    <input type="text" placeholder="Yangi parolni takrorlang" />
+                    <button>O'zgartirish</button>
+                </SidebarDrawer>
+            }
             <div className={`w-screen h-[100px] relative flex items-center justify-center`} style={{ backgroundImage: `url(${BackgroundImage})`, backgroundSize: "cover", backgroundPosition: 'center', backgroundRepeat: 'repeat-y' }}>
                 <div className="absolute -bottom-30 text-white w-[1200px] h-max bg-[#1e1f28] rounded-2xl shadow-lg p-5">
                     <div className="flex items-center justify-between relative">
@@ -132,3 +150,18 @@ function About() {
         </>
     )
 }
+
+
+export function DashboardContentWrapper({ activeTab }: { activeTab: string }) {
+    switch (activeTab) {
+        case "account":
+            return <DashboardContent />;
+        case "saved":
+            return <SavedItems />;
+        case "about":
+            return <About />;
+        default:
+            return <DashboardContent />;
+    }
+}
+
