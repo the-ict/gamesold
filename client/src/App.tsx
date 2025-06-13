@@ -7,6 +7,11 @@ import SingleAccount from "./pages/SingleAccount";
 import Dashboard from "./pages/Dashboard"
 import Messages from "./components/Messages";
 
+
+const require  = true;
+
+
+
 export default function App() {
   return (
     <div>
