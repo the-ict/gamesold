@@ -27,11 +27,6 @@ export default function Navbar() {
                     </form>
                 </div>
                 <div className="flex items-center gap-5 justify-between w-max">
-                    <select name="language" id="language" className="p-2 px-3.5 border rounded-[10px]">
-                        <option value="en">English </option>
-                        <option value="ar">Arabic</option>
-                    </select>
-
                     <button className="cursor-pointer bg-red-500 px-3 py-3 text-white font-bold transition-all hover:bg-red-400 hover:text-white rounded-full">Sign In / Sign Up</button>
                 </div>
             </div>
