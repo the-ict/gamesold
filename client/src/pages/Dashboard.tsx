@@ -23,6 +23,7 @@ export default function Dashboard() {
                     setSidebarOpen={setSidebarOpen}
                     sidebarWidth="w-[400px]"
                     sidebarSide="left-0"
+                    sidebarBackgroundColor="bg-white"
                 >
                     <div className="flex flex-col items-start justify-center gap-5 mt-[50%]">
                         <input type="text" placeholder="Tahallusingiz" className="px-5 py-3 border-2 w-[100%]" autoFocus />
