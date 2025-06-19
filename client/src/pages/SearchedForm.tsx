@@ -1,13 +1,12 @@
 import { FaArrowDown } from "react-icons/fa"
 import Navbar from "../components/Navbar"
 import Footer from "@/components/Footer"
-import Sidebar from "@/components/SidebarDrawer"
 
 export default function SearchedForm() {
     return (
-        <div className="">
+        <>
             <Navbar />
-            <div className="flex justify-center min-h-screen pt-5 pb-5 bg-[#121212]">
+            <div className="flex justify-center min-h-[120vh] pt-5 pb-5 bg-[#121212]">
                 <div className="w-[1200px]">
                     <h1 className="text-2xl text-white font-bold">Search results: <span className="text-red-500">nasdnf</span></h1>
                     <div className="flex items-start justify-between w-ful gap-2">
@@ -54,51 +53,51 @@ export default function SearchedForm() {
                         </div>
                         <div className="flex items-center w-[70%] gap-10 flex-wrap mt-5">
                             <div className="w-[250px] relative border group">
-                                <p className="absolute bottom-0 left-0 right-0 top-0 h-max z-50 group-hover:hidden text-center w-full bg-black text-white py-3">Game</p>
+                                <p className="absolute bottom-0 left-0 right-0 top-0 h-max z-10 group-hover:hidden text-center w-full bg-black text-white py-3">Game</p>
                                 <img className="w-full h-full object-contain blur-[5px] hover:blur-none cursor-pointer  transition-all duration-300 ease-in-out" src="https://www.g2g.com/img/affiliate-home.webp" alt="" />
-                                <p className="absolute bottom-0 left-0 right-0 text-center w-full z-50 bg-black group-hover:hidden text-white py-3">narxi: 100$</p>
+                                <p className="absolute bottom-0 left-0 right-0 text-center w-full z-10 bg-black group-hover:hidden text-white py-3">narxi: 100$</p>
                             </div>
                             <div className="w-[250px] relative border group">
-                                <p className="absolute bottom-0 left-0 right-0 top-0 h-max z-50 group-hover:hidden text-center w-full bg-black text-white py-3">Game</p>
+                                <p className="absolute bottom-0 left-0 right-0 top-0 h-max z-10 group-hover:hidden text-center w-full bg-black text-white py-3">Game</p>
                                 <img className="w-full h-full object-contain blur-[5px] hover:blur-none cursor-pointer  transition-all duration-300 ease-in-out" src="https://www.g2g.com/img/affiliate-home.webp" alt="" />
-                                <p className="absolute bottom-0 left-0 right-0 text-center w-full z-50 bg-black group-hover:hidden text-white py-3">narxi: 100$</p>
+                                <p className="absolute bottom-0 left-0 right-0 text-center w-full z-10 bg-black group-hover:hidden text-white py-3">narxi: 100$</p>
                             </div>
                             <div className="w-[250px] relative border group">
-                                <p className="absolute bottom-0 left-0 right-0 top-0 h-max z-50 group-hover:hidden text-center w-full bg-black text-white py-3">Game</p>
+                                <p className="absolute bottom-0 left-0 right-0 top-0 h-max z-10 group-hover:hidden text-center w-full bg-black text-white py-3">Game</p>
                                 <img className="w-full h-full object-contain blur-[5px] hover:blur-none cursor-pointer  transition-all duration-300 ease-in-out" src="https://www.g2g.com/img/affiliate-home.webp" alt="" />
-                                <p className="absolute bottom-0 left-0 right-0 text-center w-full z-50 bg-black group-hover:hidden text-white py-3">narxi: 100$</p>
+                                <p className="absolute bottom-0 left-0 right-0 text-center w-full z-10 bg-black group-hover:hidden text-white py-3">narxi: 100$</p>
                             </div>
                             <div className="w-[250px] relative border group">
-                                <p className="absolute bottom-0 left-0 right-0 top-0 h-max z-50 group-hover:hidden text-center w-full bg-black text-white py-3">Game</p>
+                                <p className="absolute bottom-0 left-0 right-0 top-0 h-max z-10 group-hover:hidden text-center w-full bg-black text-white py-3">Game</p>
                                 <img className="w-full h-full object-contain blur-[5px] hover:blur-none cursor-pointer  transition-all duration-300 ease-in-out" src="https://www.g2g.com/img/affiliate-home.webp" alt="" />
-                                <p className="absolute bottom-0 left-0 right-0 text-center w-full z-50 bg-black group-hover:hidden text-white py-3">narxi: 100$</p>
+                                <p className="absolute bottom-0 left-0 right-0 text-center w-full z-10 bg-black group-hover:hidden text-white py-3">narxi: 100$</p>
                             </div>
 
                             <div className="w-[250px] relative border group">
-                                <p className="absolute bottom-0 left-0 right-0 top-0 h-max z-50 group-hover:hidden text-center w-full bg-black text-white py-3">Game</p>
+                                <p className="absolute bottom-0 left-0 right-0 top-0 h-max z-10 group-hover:hidden text-center w-full bg-black text-white py-3">Game</p>
                                 <img className="w-full h-full object-contain blur-[5px] hover:blur-none cursor-pointer  transition-all duration-300 ease-in-out" src="https://www.g2g.com/img/affiliate-home.webp" alt="" />
-                                <p className="absolute bottom-0 left-0 right-0 text-center w-full z-50 bg-black group-hover:hidden text-white py-3">narxi: 100$</p>
+                                <p className="absolute bottom-0 left-0 right-0 text-center w-full z-10 bg-black group-hover:hidden text-white py-3">narxi: 100$</p>
                             </div>
                             <div className="w-[250px] relative border group">
-                                <p className="absolute bottom-0 left-0 right-0 top-0 h-max z-50 group-hover:hidden text-center w-full bg-black text-white py-3">Game</p>
+                                <p className="absolute bottom-0 left-0 right-0 top-0 h-max z-10 group-hover:hidden text-center w-full bg-black text-white py-3">Game</p>
                                 <img className="w-full h-full object-contain blur-[5px] hover:blur-none cursor-pointer  transition-all duration-300 ease-in-out" src="https://www.g2g.com/img/affiliate-home.webp" alt="" />
-                                <p className="absolute bottom-0 left-0 right-0 text-center w-full z-50 bg-black group-hover:hidden text-white py-3">narxi: 100$</p>
+                                <p className="absolute bottom-0 left-0 right-0 text-center w-full z-10 bg-black group-hover:hidden text-white py-3">narxi: 100$</p>
                             </div>
                             <div className="w-[250px] relative border group">
-                                <p className="absolute bottom-0 left-0 right-0 top-0 h-max z-50 group-hover:hidden text-center w-full bg-black text-white py-3">Game</p>
+                                <p className="absolute bottom-0 left-0 right-0 top-0 h-max z-10 group-hover:hidden text-center w-full bg-black text-white py-3">Game</p>
                                 <img className="w-full h-full object-contain blur-[5px] hover:blur-none cursor-pointer  transition-all duration-300 ease-in-out" src="https://www.g2g.com/img/affiliate-home.webp" alt="" />
-                                <p className="absolute bottom-0 left-0 right-0 text-center w-full z-50 bg-black group-hover:hidden text-white py-3">narxi: 100$</p>
+                                <p className="absolute bottom-0 left-0 right-0 text-center w-full z-10 bg-black group-hover:hidden text-white py-3">narxi: 100$</p>
                             </div>
                             <div className="w-[250px] relative border group">
-                                <p className="absolute bottom-0 left-0 right-0 top-0 h-max z-50 group-hover:hidden text-center w-full bg-black text-white py-3">Game</p>
+                                <p className="absolute bottom-0 left-0 right-0 top-0 h-max z-10 group-hover:hidden text-center w-full bg-black text-white py-3">Game</p>
                                 <img className="w-full h-full object-contain blur-[5px] hover:blur-none cursor-pointer  transition-all duration-300 ease-in-out" src="https://www.g2g.com/img/affiliate-home.webp" alt="" />
-                                <p className="absolute bottom-0 left-0 right-0 text-center w-full z-50 bg-black group-hover:hidden text-white py-3">narxi: 100$</p>
+                                <p className="absolute bottom-0 left-0 right-0 text-center w-full z-10 bg-black group-hover:hidden text-white py-3">narxi: 100$</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <Footer />
-        </div>
+        </>
     )
 }
