@@ -12,7 +12,7 @@ import SearchedForm from "./pages/SearchedForm";
 export default function App() {
   return (
     <div>
-      <Login />
+      <SingleAccount/>
     </div>
   );
 }
