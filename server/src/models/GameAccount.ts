@@ -10,7 +10,6 @@ export interface IGameAccount extends Document {
   seller: mongoose.Types.ObjectId;
   buyer?: mongoose.Types.ObjectId;
   status: "available" | "pending" | "sold";
-  chats: mongoose.Types.ObjectId[];
   video: string;
 }
 
@@ -30,7 +29,6 @@ const gameAccountSchema = new Schema(
       default: "available",
     },
     video: { type: String, required: true },
-    chats: [{ type: Schema.Types.ObjectId, ref: "Chat" }],
   },
   {
     timestamps: true,

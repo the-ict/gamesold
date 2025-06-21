@@ -1,10 +1,37 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const router = require('express').Router();
-const GameAccount = require("../models/GameAccount");
+const GameAccount_1 = __importDefault(require("../models/GameAccount"));
 router.get("/", async (req, res, next) => {
     try {
-        const gameAccounts = await GameAccount.findAll();
+        const gameAccounts = await GameAccount_1.default.find();
+        res.json(gameAccounts);
+    }
+    catch (error) {
+        next(error);
+    }
+});
+router.get("/search", async (req, res, next) => {
+    try {
+        const { name, platform, mixPrice, maxPrice } = req.query;
+        const { Op } = require("sequelize");
+        const where = {};
+        if (name) {
+            where.name = { [Op.like]: `%${name}%` };
+        }
+        if (platform) {
+            where.platform = { [Op.like]: `%${platform}%` };
+        }
+        if (mixPrice && !isNaN(Number(mixPrice))) {
+            where.price = { [Op.gte]: Number(mixPrice) };
+        }
+        if (maxPrice && !isNaN(Number(maxPrice))) {
+            where.price = { ...where.price, [Op.lte]: Number(maxPrice) };
+        }
+        const gameAccounts = await GameAccount_1.default.find({ where });
         res.json(gameAccounts);
     }
     catch (error) {
@@ -13,7 +40,7 @@ router.get("/", async (req, res, next) => {
 });
 router.get("/:id", async (req, res, next) => {
     try {
-        const gameAccount = await GameAccount.findByPk(req.params.id);
+        const gameAccount = await GameAccount_1.default.findById(req.params.id);
         if (gameAccount) {
             res.json(gameAccount);
         }
@@ -27,7 +54,7 @@ router.get("/:id", async (req, res, next) => {
 });
 router.post("/", async (req, res, next) => {
     try {
-        const newGameAccount = await GameAccount.create(req.body);
+        const newGameAccount = await GameAccount_1.default.create(req.body);
         res.status(201).json(newGameAccount);
     }
     catch (error) {
@@ -36,11 +63,8 @@ router.post("/", async (req, res, next) => {
 });
 router.put("/:id", async (req, res, next) => {
     try {
-        const [updated] = await GameAccount.update(req.body, {
-            where: { id: req.params.id }
-        });
-        if (updated) {
-            const updatedGameAccount = await GameAccount.findByPk(req.params.id);
+        const updatedGameAccount = await GameAccount_1.default.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (updatedGameAccount) {
             res.json(updatedGameAccount);
         }
         else {
@@ -53,9 +77,7 @@ router.put("/:id", async (req, res, next) => {
 });
 router.delete("/:id", async (req, res, next) => {
     try {
-        const deleted = await GameAccount.destroy({
-            where: { id: req.params.id }
-        });
+        const deleted = await GameAccount_1.default.findByIdAndDelete(req.params.id);
         if (deleted) {
             res.status(204).send();
         }
