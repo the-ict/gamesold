@@ -1,30 +1,52 @@
-# GameSold 🎮
+# 🚀 GameSold — Твой безопасный маркетплейс игровых аккаунтов
 
-**GameSold** — bu o'yin akkauntlarini xavfsiz va ishonchli tarzda sotish yoki xarid qilish uchun yaratilgan onlayn platforma. Bu yerda foydalanuvchilar o'zlarining mavjud o'yin akkauntlarini (Steam, PSN, Xbox, Epic Games va boshqalar) sotuvga qo'yishlari va boshqa foydalanuvchilardan akkauntlar xarid qilishlari mumkin.
+<div align="center">
+  <!-- Баннер или лого по желанию, замените src на ваш путь -->
+  <!-- <img src="https://your-cdn.com/gamesold-banner.png" alt="GameSold banner" width="80%" /> -->
+</div>
 
-## 🔥 Xususiyatlar
-
-- O'yin akkauntlarini tez va oson sotuvga qo'yish
-- Xarid qilishdan oldin to‘liq ma’lumotlarni ko‘rish
-- Ishonchli foydalanuvchilar baholash tizimi
-- To‘lov va tranzaktsiyalar xavfsizligi
-- Admin panel orqali kontentni boshqarish
-
-## 🎯 Maqsad
-
-GameSold o'zbek auditoriyasiga mo‘ljallangan va lokal tilni qo‘llab-quvvatlaydi. Bizning asosiy maqsadimiz — o'yin ixlosmandlari uchun ishonchli marketplace yaratish.
-
-## 💡 Texnologiyalar
-
-- Frontend: (masalan) React / Vue / Next.js
-- Backend: (masalan) Node.js / Laravel / Django
-- Ma'lumotlar bazasi: PostgreSQL / MongoDB
-- Autentifikatsiya: JWT / OAuth
-
-## 📌 Boshlash uchun
-
-> Loyihani yuklab olib ishga tushurish uchun batafsil hujjat tez orada qo‘shiladi.
+**GameSold** — это современная онлайн-платформа для безопасной и удобной продажи и покупки игровых аккаунтов. Продавай или покупай аккаунты (Steam, PSN, Xbox, Epic Games и др.) быстро и просто, с максимальной защитой!
 
 ---
 
-Agar sizda takliflar, savollar yoki muammolar bo‘lsa, iltimos, Issues bo‘limi orqali bizga xabar bering.
+## 🔥 Основные возможности
+
+- ⚡️ Молниеносное размещение аккаунтов на продажу
+- 🔍 Полная информация и прозрачность перед покупкой
+- ⭐️ Рейтинг и отзывы — доверие на первом месте
+- 🛡 Безопасные платежи и защита транзакций
+- 🛠 Удобная админ-панель для управления контентом
+
+---
+
+## 🎯 Наша миссия
+
+GameSold создан специально для узбекской аудитории и поддерживает локальный язык.  
+**Наша цель — сформировать доверенный маркетплейс для геймеров, где все сделки прозрачны и защищены.**
+
+---
+
+## 💡 Используемые технологии
+
+| Frontend                            | Backend             | База данных | Аутентификация | 
+|:------------------------------------:|:-------------------:|:-----------:|:---------------:|
+| React, Tailwindcss, TypeScript | Node.js, Express.js | MongoDb  | Google,Custom           
+
+---
+
+## 🚦 Как начать?
+
+> 📘 Подробная инструкция по запуску проекта появится совсем скоро.<br>Следите за обновлениями!
+
+---
+
+## 💬 Обратная связь
+
+Если есть предложения, вопросы или возникли трудности —  
+создайте issue или напишите нам через [Issues](../../issues) на GitHub.
+
+<!-- Можно добавить стильные иллюстрации, если есть:
+<div align="center">
+  <img src="https://your-cdn.com/gamesold-characters.png" alt="GameSold Characters" width="50%" />
+</div>
+-->
