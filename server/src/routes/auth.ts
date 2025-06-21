@@ -1,7 +1,6 @@
 const router = require('express').Router();
-const User = require('../models/UserAccount');
+import User from "../models/UserAccount";
 import { Request, Response, NextFunction } from "express";
-
 
 router.post("/register", async (req: Request, res: Response, next:NextFunction) => {
     try {
@@ -25,7 +24,7 @@ router.post("/register", async (req: Request, res: Response, next:NextFunction) 
     } catch (error) {
         next(error);
     }
-})
+}) 
 
 
 router.post("/login", async (req: Request, res: Response, next: NextFunction) => {
@@ -61,3 +60,5 @@ router.post("/login", async (req: Request, res: Response, next: NextFunction) =>
         next(error);
     }
 })
+
+module.exports = router;

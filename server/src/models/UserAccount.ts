@@ -13,6 +13,7 @@ export interface IUser extends Document {
     displayName?: string,
     firstName?: string,
     lastName?: string,
+    chats?: string[]
 }
 
 export const userSchema = new Schema<IUser>({
@@ -28,10 +29,9 @@ export const userSchema = new Schema<IUser>({
     displayName: { type: String, default: "" },
     firstName: { type: String, default: "" },
     lastName: { type: String, default: "" },
+    chats: { type: [String], default: [] }
 }, {
     timestamps: true,     
 });
 
-export const User = mongoose.model<IUser>("User", userSchema);
-
-export default User;
+export default mongoose.model<IUser>("User", userSchema);

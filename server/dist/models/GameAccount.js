@@ -49,7 +49,6 @@ const gameAccountSchema = new mongoose_1.Schema({
         default: "available",
     },
     video: { type: String, required: true },
-    chats: [{ type: mongoose_1.Schema.Types.ObjectId, ref: "Chat" }],
 }, {
     timestamps: true,
 });

@@ -8,12 +8,11 @@ import {
   Server,
 } from 'socket.io'
 import { createServer } from 'http';
-import io from "socket.io"
 
 dotenv.config();
 
 import "./routes/authPassport"
-import Message from "./models/Message";
+const Message = require("./models/Message");
 
 const app = express()
 
@@ -30,7 +29,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 const PORT = process.env.PORT || 5000
-const MONGO_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/game-accounts"
+const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/game-accounts"
 const connectDB = async () => {
   try {
     await mongoose.connect(MONGO_URI)
@@ -52,8 +51,8 @@ app.get("/auth/google", (req: Request, res: Response) => {
 app.get(
   '/google/callback',
   passport.authenticate('google', {
-    successRedirect: 'http://localhost:5173/dashboard',
-    failureRedirect: 'http://localhost:5173/',
+    successRedirect: 'http://localhost:5000/',
+    failureRedirect: 'http://localhost:5000/failure',
   })
 );
 
@@ -61,6 +60,18 @@ app.use((req: Request, res: Response, next: Function) => {
   console.log(`${req.method} ${req.url}`);
   next();
 })
+
+
+// importing routes
+const userAccountRoutes = require("./routes/UserAccount");
+const gameAccountRoutes = require("./routes/GameAccount");
+const messageRoutes = require("./routes/Message");
+const authRoutes = require("./routes/auth");
+
+app.use("/api/game", gameAccountRoutes);
+app.use("/api/user", userAccountRoutes);  
+app.use("/api/messages", messageRoutes);
+app.use("/api/auth", authRoutes);
 
 
 // socket.io setup

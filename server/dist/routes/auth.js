@@ -1,10 +1,13 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const router = require('express').Router();
-const User = require('../models/UserAccount');
+const UserAccount_1 = __importDefault(require("../models/UserAccount"));
 router.post("/register", async (req, res, next) => {
     try {
-        const newUser = new User({
+        const newUser = new UserAccount_1.default({
             name: req.body.name,
             email: req.body.email,
             password: req.body.password,
@@ -28,7 +31,7 @@ router.post("/register", async (req, res, next) => {
 router.post("/login", async (req, res, next) => {
     try {
         const { email, password } = req.body;
-        const user = await User.findOne({ email: email });
+        const user = await UserAccount_1.default.findOne({ email: email });
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
@@ -57,3 +60,4 @@ router.post("/login", async (req, res, next) => {
         next(error);
     }
 });
+module.exports = router;

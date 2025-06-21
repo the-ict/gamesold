@@ -1,6 +1,6 @@
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const passport = require('passport');
-const UserModel = require("../models/UserAccount");
+import UserModel from '../models/UserAccount';
 
 passport.use(new GoogleStrategy({
     clientID: process.env.CLIENT_ID,
@@ -27,8 +27,10 @@ passport.use(new GoogleStrategy({
             firstName: profile.name.givenName,
             lastName: profile.name.familyName,
             email: profile.emails[0].value,
-            image: profile.photos[0].value
+            image: profile.photos[0].value,
+            name: (profile.name.givenName + profile.name.familyName).trim().toLowerCase(),
         }).save();
+
         return cb(null, newUser);
     }
 ));

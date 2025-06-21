@@ -13,7 +13,7 @@ const socket_io_1 = require("socket.io");
 const http_1 = require("http");
 dotenv_1.default.config();
 require("./routes/authPassport");
-const Message_1 = __importDefault(require("./models/Message"));
+const Message = require("./models/Message");
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
@@ -25,7 +25,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 const PORT = process.env.PORT || 5000;
-const MONGO_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/game-accounts";
+const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/game-accounts";
 const connectDB = async () => {
     try {
         await mongoose_1.default.connect(MONGO_URI);
@@ -43,13 +43,22 @@ app.get("/auth/google", (req, res) => {
     passport.authenticate("google", { scope: ["profile", "email"] })(req, res);
 });
 app.get('/google/callback', passport.authenticate('google', {
-    successRedirect: 'http://localhost:5173/dashboard',
-    failureRedirect: 'http://localhost:5173/',
+    successRedirect: 'http://localhost:5000/',
+    failureRedirect: 'http://localhost:5000/failure',
 }));
 app.use((req, res, next) => {
     console.log(`${req.method} ${req.url}`);
     next();
 });
+// importing routes
+const userAccountRoutes = require("./routes/UserAccount");
+const gameAccountRoutes = require("./routes/GameAccount");
+const messageRoutes = require("./routes/Message");
+const authRoutes = require("./routes/auth");
+app.use("/api/game", gameAccountRoutes);
+app.use("/api/user", userAccountRoutes);
+app.use("/api/messages", messageRoutes);
+app.use("/api/auth", authRoutes);
 // socket.io setup
 const httpServer = (0, http_1.createServer)(app);
 const socketIo = new socket_io_1.Server(httpServer, {
@@ -69,7 +78,7 @@ socketIo.on("connection", (socket) => {
 socketIo.on("send_message", async (data) => {
     console.log("Message received:", data);
     const { sender, receiver, content } = data;
-    const message = new Message_1.default({
+    const message = new Message({
         sender,
         receiver,
         content,
