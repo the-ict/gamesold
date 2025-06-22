@@ -22,10 +22,8 @@ passport.use(new GoogleStrategy({
         lastName: profile.name.familyName,
         email: profile.emails[0].value,
         image: profile.photos[0].value,
-        name: profile.name.givenName + " " + profile.name.familyName,
+        name: (profile.name.givenName + profile.name.familyName).trim().toLowerCase(),
     }).save();
-    console.log("new user created:", newUser);
-    console.log("user's google informations:", profile);
     return cb(null, newUser);
 }));
 passport.serializeUser(function (user, done) {
