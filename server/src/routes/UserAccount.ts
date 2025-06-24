@@ -17,7 +17,15 @@ router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
     }
 });
 
-// contorlling a user chats
+// get all user accounts
+router.get('/', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const userAccounts = await UserAccount.find();
+        res.json(userAccounts);
+    } catch (error) {
+        next(error);
+    }
+});
 
 
 

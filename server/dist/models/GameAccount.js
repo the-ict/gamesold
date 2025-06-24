@@ -36,7 +36,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
 const gameAccountSchema = new mongoose_1.Schema({
     author: { type: String, required: true },
-    game: { type: String, required: true },
+    game: { type: String, required: true, enum: ["PUBG", "Fortnite", "CSGO", "Call of Duty"] },
     region: { type: String, required: true },
     price: { type: Number, required: true },
     description: { type: String, required: true },

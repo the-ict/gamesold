@@ -79,7 +79,7 @@ router.delete("/:id", async (req, res, next) => {
     try {
         const deleted = await GameAccount_1.default.findByIdAndDelete(req.params.id);
         if (deleted) {
-            res.status(204).send();
+            res.status(204).send("Game account deleted successfully");
         }
         else {
             res.status(404).send("Game account not found");

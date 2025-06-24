@@ -2,21 +2,20 @@ import mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
 
 export interface IMessage extends Document {
-  sender: string;
-  receiver: string;
-  content: string;
+  sender: string | mongoose.Types.ObjectId;
+  receiver: string | mongoose.Types.ObjectId;
+  content: string; 
   timestamp: Date;
-  chatId: string
+  chatId: mongoose.Types.ObjectId; 
 }
 
 const messageSchema = new Schema<IMessage>({
-  sender: { type: String, required: true },
-  receiver: { type: String, required: true },
+  sender: { type: Schema.Types.ObjectId, ref: "User", required: true },
+  receiver: { type: Schema.Types.ObjectId, ref: "User", required: true },
   content: { type: String, required: true },
-  chatId: { type: String, required: true }, // Unique identifier for the chat
+  chatId: { type: Schema.Types.ObjectId, ref:  "Chat", required: true }, // Unique identifier for the chat
 }, {
-  timestamps: { createdAt: 'timestamp', updatedAt: false },
-  _id: false // Disable automatic _id field generation
+  timestamps: true, // Disable automatic _id field generation
 }); 
 
 const Message = mongoose.model<IMessage>("Message", messageSchema);

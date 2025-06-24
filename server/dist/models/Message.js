@@ -6,13 +6,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const mongoose_2 = require("mongoose");
 const messageSchema = new mongoose_2.Schema({
-    sender: { type: String, required: true },
-    receiver: { type: String, required: true },
+    sender: { type: mongoose_2.Schema.Types.ObjectId, ref: "User", required: true },
+    receiver: { type: mongoose_2.Schema.Types.ObjectId, ref: "User", required: true },
     content: { type: String, required: true },
-    chatId: { type: String, required: true }, // Unique identifier for the chat
+    chatId: { type: mongoose_2.Schema.Types.ObjectId, ref: "Chat", required: true }, // Unique identifier for the chat
 }, {
-    timestamps: { createdAt: 'timestamp', updatedAt: false },
-    _id: false // Disable automatic _id field generation
+    timestamps: true, // Disable automatic _id field generation
 });
 const Message = mongoose_1.default.model("Message", messageSchema);
 exports.default = Message;
