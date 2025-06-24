@@ -57,8 +57,9 @@ const messageRoutes = require("./routes/Message");
 const authRoutes = require("./routes/auth");
 app.use("/api/game", gameAccountRoutes);
 app.use("/api/user", userAccountRoutes);
-app.use("/api/messages", messageRoutes);
+app.use("/api/message", messageRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/chat", require("./routes/Chat"));
 // socket.io setup
 const httpServer = (0, http_1.createServer)(app);
 const socketIo = new socket_io_1.Server(httpServer, {

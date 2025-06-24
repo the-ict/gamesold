@@ -7,7 +7,8 @@ export interface IChat extends Document {
 const chatSchema = new Schema<IChat>({
     usersId: [{ type: String, required: true }],
 }, {
-    timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },
+    timestamps: true, // Automatically manage createdAt and updatedAt fields}
+    _id: true,
 });
 
 

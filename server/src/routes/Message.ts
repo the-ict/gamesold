@@ -1,10 +1,11 @@
 const router = require('express').Router();
+import mongoose from 'mongoose';
 import Messages from '../models/Message';
 import { Request, Response } from 'express';
 
 
 // getting chat messages
-router.get('/messages', async (req: Request, res: Response) => {
+router.get('/', async (req: Request, res: Response) => {
   try {
     const { sender, receiver } = req.query;
 
@@ -27,12 +28,12 @@ router.get('/messages', async (req: Request, res: Response) => {
 });
 
 // sending a chat message
-router.post('/messages', async (req: Request, res: Response) => {
+router.post('/', async (req: Request, res: Response) => {
   try {
     const { sender, receiver, content, chatId } = req.body;
 
-    if (!sender || !receiver || !content) {
-      return res.status(400).json({ error: "Sender, receiver, and content are required" });
+    if (!sender || !receiver || !content || !chatId) {
+      return res.status(400).json({ error: "All fields are required" });
     }
 
     const newMessage = new Messages({
@@ -40,14 +41,16 @@ router.post('/messages', async (req: Request, res: Response) => {
       receiver,
       content,
       chatId,
-      timestamp: new Date()
     });
 
     await newMessage.save();
+
     res.status(201).json(newMessage);
   } catch (error) {
     console.error("Error sending message:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
+
 module.exports = router

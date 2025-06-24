@@ -16,7 +16,7 @@ export interface IGameAccount extends Document {
 const gameAccountSchema = new Schema(
   {
     author: { type: String, required: true },
-    game: { type: String, required: true },
+    game: { type: String, required: true, enum: ["PUBG", "Fortnite", "CSGO", "Call of Duty"] },
     region: { type: String, required: true },
     price: { type: Number, required: true },
     description: { type: String, required: true },

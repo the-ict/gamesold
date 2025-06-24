@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const router = require('express').Router();
 const Message_1 = __importDefault(require("../models/Message"));
 // getting chat messages
-router.get('/messages', async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         const { sender, receiver } = req.query;
         if (!sender || !receiver) {
@@ -26,18 +26,17 @@ router.get('/messages', async (req, res) => {
     }
 });
 // sending a chat message
-router.post('/messages', async (req, res) => {
+router.post('/', async (req, res) => {
     try {
         const { sender, receiver, content, chatId } = req.body;
-        if (!sender || !receiver || !content) {
-            return res.status(400).json({ error: "Sender, receiver, and content are required" });
+        if (!sender || !receiver || !content || !chatId) {
+            return res.status(400).json({ error: "All fields are required" });
         }
         const newMessage = new Message_1.default({
             sender,
             receiver,
             content,
             chatId,
-            timestamp: new Date()
         });
         await newMessage.save();
         res.status(201).json(newMessage);
