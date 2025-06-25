@@ -24,6 +24,7 @@ passport.use(new GoogleStrategy({
         image: profile.photos[0].value,
         name: (profile.name.givenName + profile.name.familyName).trim().toLowerCase(),
     }).save();
+    console.log("New user created:", newUser);
     return cb(null, newUser);
 }));
 passport.serializeUser(function (user, done) {

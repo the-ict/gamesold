@@ -16,7 +16,6 @@ router.post("/register", async (req, res, next) => {
             savedAccounts: req.body.savedAccounts || [],
             tranzactions: req.body.tranzactions || [],
             accounts: req.body.accounts || [],
-            googleId: req.body.googleId || "",
             displayName: req.body.displayName || "",
             firstName: req.body.firstName || "",
             lastName: req.body.lastName || ""
@@ -40,20 +39,7 @@ router.post("/login", async (req, res, next) => {
         }
         res.status(200).json({
             message: "Login successful",
-            user: {
-                id: user._id,
-                name: user.name,
-                email: user.email,
-                image: user.image,
-                balance: user.balance,
-                savedAccounts: user.savedAccounts,
-                tranzactions: user.tranzactions,
-                accounts: user.accounts,
-                googleId: user.googleId,
-                displayName: user.displayName,
-                firstName: user.firstName,
-                lastName: user.lastName
-            }
+            user
         });
     }
     catch (error) {

@@ -15,7 +15,10 @@ dotenv_1.default.config();
 require("./routes/authPassport");
 const Message = require("./models/Message");
 const app = (0, express_1.default)();
-app.use((0, cors_1.default)());
+app.use((0, cors_1.default)({
+    origin: "http://localhost:5173",
+    credentials: true
+}));
 app.use(express_1.default.json());
 app.use(session({
     secret: "my-secret-key",
@@ -42,10 +45,27 @@ app.get("/", (req, res) => {
 app.get("/auth/google", (req, res) => {
     passport.authenticate("google", { scope: ["profile", "email"] })(req, res);
 });
-app.get('/google/callback', passport.authenticate('google', {
-    successRedirect: 'http://localhost:5000/',
-    failureRedirect: 'http://localhost:5000/failure',
+app.get("/google/callback", passport.authenticate("google", {
+    successRedirect: "http://localhost:5173/dashboard",
+    failureRedirect: "http://localhost:5173/login",
+    session: true,
 }));
+app.get("/google/me", (req, res) => {
+    try {
+        console.log("requesting");
+        console.log(req.user);
+        if (req.isAuthenticated()) {
+            console.log("user informations: ", req.user);
+            res.send(req.user);
+        }
+        else {
+            res.send("You have'nt registreted before");
+        }
+    }
+    catch (error) {
+        res.status(401).json({ message: "Google informations not founded" });
+    }
+});
 app.use((req, res, next) => {
     console.log(`${req.method} ${req.url}`);
     next();

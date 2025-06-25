@@ -1,18 +1,25 @@
 // client/src/App.tsx
-import "./main.css"
-import Messages from "./components/Messages";
-import Register from "./pages/Register";
-import Home from "./pages/Home";
-import Dashboard from "./pages/Dashboard";
+import "./main.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SingleAccount from "./pages/SingleAccount";
-import Login from "./pages/Login";
-import SearchForm from "./components/SearchForm";
 import SearchedForm from "./pages/SearchedForm";
+import Dashboard from "./pages/Dashboard";
+import Register from "./pages/Register";
+import Login from "./pages/Login";
+import Home from "./pages/Home";
+
 
 export default function App() {
   return (
-    <div>
-      <SingleAccount/>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/account/:id" element={<SingleAccount />} />
+        <Route path="/search" element={<SearchedForm />} />
+      </Routes>
+    </Router>
   );
 }

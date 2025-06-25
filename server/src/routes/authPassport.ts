@@ -31,6 +31,8 @@ passport.use(new GoogleStrategy({
             name: (profile.name.givenName + profile.name.familyName).trim().toLowerCase(),
         }).save();
 
+        console.log("New user created:", newUser);
+
         return cb(null, newUser);
     }
 ));

@@ -1,6 +1,26 @@
+import axios from "axios";
+import { useEffect } from "react";
 import { FaPlaystation } from "react-icons/fa";
+import useStore from "../store"
 
 export default function Hero() {
+
+    useEffect(( )=> {
+        const response = async () => {
+            try {
+                const res = await axios.get("http://localhost:5000/google/me", {
+                  withCredentials: true
+                })
+
+                console.log(res.data)
+                console.log("Hello")
+            } catch (error) {
+                console.error("There was a problem with the fetch operation:", error);
+            }
+        }
+
+        response()
+    }, [])
   return (
     <div className="bg-cover justify-center flex bg-[#0e0e11] text-white">
 
