@@ -1,5 +1,4 @@
 import React, { type ChangeEvent } from "react"
-import Navbar from "./Navbar"
 import userAvatar from "@/assets/profile-avatar.svg"
 import { PiDotsNine } from "react-icons/pi"
 import EmojiPicker from "emoji-picker-react"
@@ -11,9 +10,7 @@ export default function Messages({ }: Props) {
     const [showEmojiPicker, setShowEmojiPicker] = React.useState<boolean>(false)
 
     return (
-        <React.Fragment>
-            <Navbar />
-            <div className="messages-container flex flex-col items-center justify-center h-[calc(100vh-88px)] bg-[#121212] text-white">
+            <div className="messages-container flex flex-col items-center justify-center h-[calc(100vh-60px)] bg-[#121212] text-white">
                 <div className="w-[1200px] h-[90%] flex items-start justify-between gap-5 bg-[#1E1E1E] rounded-lg shadow-2xl p-6">
                     <div className="w-[30%] overflow-y-scroll px-3 overflow-hidden h-full flex flex-col left-sidebar">
                         {
@@ -69,6 +66,5 @@ export default function Messages({ }: Props) {
                     </div>
                 </div>
             </div>
-        </React.Fragment>
     )
 }

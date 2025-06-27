@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
+import Messages from "./pages/Messages.p";
 
 
 export default function App() {
@@ -19,6 +20,7 @@ export default function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/account/:id" element={<SingleAccount />} />
         <Route path="/search" element={<SearchedForm />} />
+        <Route path="/messages" element={<Messages />} />
       </Routes>
     </Router>
   );

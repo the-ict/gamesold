@@ -3,7 +3,7 @@ import { FaXmark } from "react-icons/fa6";
 
 export default function SearchForm({setSearchForm}: {setSearchForm: (value: boolean) => void}) {
     return (
-        <div className="flex items-center flex-col fixed top-0 left-0 right-0 justify-center z-88 h-screen w-screen bg-black/60 backdrop:blur-[10px]">
+        <div className="flex items-center flex-col fixed top-0 left-0 right-0 justify-center z-[100] h-screen w-screen bg-black/60 backdrop:blur-[10px]">
             <FaXmark size={25} className="cursor-pointer text-white absolute top-10 right-10" onClick={() => setSearchForm(false)}/>
 
             <div className="w-[1200px] flex items-center gap-2 p-2 border border-gray-300 h-[80px] rounded px-4 py-5 bg-white">
