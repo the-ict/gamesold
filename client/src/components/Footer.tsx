@@ -12,7 +12,7 @@ export default function Footer() {
     const [darkMode, setDarkMode] = useState<boolean>(false)
 
     return (
-        <div className="flex items-center py-5 mt-10 justify-center bg-gray-300">
+        <div className="flex items-center py-5 justify-center bg-[#303030] text-white">
             <div className="w-[1200px]">
                 <span>
                     G2G is a comprehensive online marketplace for all things

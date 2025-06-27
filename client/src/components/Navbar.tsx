@@ -1,69 +1,60 @@
-import { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import SearchForm from "./SearchForm";
-import { Link } from "react-router-dom";
 import useStore from "../store";
+import { IoNotificationsCircle } from "react-icons/io5";
+import { BsChat } from "react-icons/bs";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState<boolean>(false);
-  const [searchForm, setSearchForm] = useState<boolean>(false);
-
   const { userId } = useStore();
 
-  window.addEventListener("scroll", () => {
-    if (window.scrollY > 200) {
-      setScrolled(true);
-    } else {
-      setScrolled(false);
-    }
-  });
-
+  const [searchModelOpen, setSearchModelOpen] = useState(false);
   return (
-    <div
-      className={`flex bg-[#222] text-white items-center w-full justify-center ${
-        scrolled ? "fixed transition-all z-50" : ""
-      }`}
-    >
-      <div className="w-[1200px] py-5 flex items-center justify-between">
-        <div className="flex items-center gap-5">
+    <div className="bg-[#27282D] text-white flex items-center justify-center sticky top-0 z-50">
+      <div className="w-[1200px] flex items-center justify-between py-3">
+        <div className="flex items-center">
           <Link to={"/"}>
-            <h1 className="text-2xl font-bold cursor-pointer">GameSold</h1>
+            <h1 className="text-3xl font-bold">GAMESOLD</h1>
           </Link>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-            }}
-            className="w-[500px] flex items-center gap-2 justify-between p-2 border border-gray-300 rounded-full"
-          >
+          <form className="flex items-center ml-10 p-2 border-[1px] w-[500px] justify-between rounded-[15px]">
             <input
               type="text"
-              onFocus={() => setSearchForm(true)}
-              className="w-full rounded-full h-full outline-none border-none px-3"
-              placeholder="Qidirish..."
+              onFocus={() => setSearchModelOpen(true)}
+              placeholder="Qidiruv...."
+              className="outline-none w-full"
             />
-            {/* <button type="submit" className="cursor-pointer p-2 bg-red-400 rounded-full text-white"><FaSearch size={18}/></button> */}
+            <button className="cursor-pointer">
+              <FaSearch />
+            </button>
           </form>
         </div>
-        <div className="flex items-center gap-5 justify-between w-max">
-          {userId ? (
-            <div>
+
+        {userId ? (
+          <div className="flex items-center gap-5">
+            <Link to={`/messages`}>
+              <BsChat className="w-[30px] h-[30px] cursor-pointer" />
+            </Link>
+            <IoNotificationsCircle className="w-[30px] h-[30px] cursor-pointer" />
+            <Link to={`/dashboard`}>
               <img
-                onClick={() => window.location.replace("/dashboard")}
-                className="w-[40px] h-[40px] rounded-full cursor-pointer"
                 src="https://i.pinimg.com/236x/2c/47/d5/2c47d5dd5b532f83bb55c4cd6f5bd1ef.jpg"
                 alt=""
+                className="w-[30px] h-[30px] cursor-pointer rounded-full object-cover"
               />
-            </div>
-          ) : (
-            <Link to={"/login"} className="cursor-pointer">
-              <button className="cursor-pointer bg-red-500 px-3 py-3 text-white font-bold transition-all hover:bg-red-400 hover:text-white rounded-full">
-                Sign In / Sign Up
-              </button>
             </Link>
-          )}
-        </div>
+          </div>
+        ) : (
+          <button
+            onClick={() => window.location.replace("/login")}
+            className="p-2 outline-none cursor-pointer bg-red-400 rounded-[15px] font-bold"
+          >
+            Login / Register
+          </button>
+        )}
       </div>
-      {searchForm && <SearchForm setSearchForm={setSearchForm} />}
+
+      {searchModelOpen && <SearchForm setSearchForm={setSearchModelOpen} />}
     </div>
   );
 }

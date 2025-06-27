@@ -6,7 +6,7 @@ import React from "react";
 
 export default function Trending() {
     return (
-        <div className="flex items-center bg-[#000000da] justify-center pt-10 text-white py-20">
+        <div className="flex items-center bg-[#212224] justify-center pt-15 text-white py-20">
             <div className="w-[1200px]">
                 <h1 className="text-3xl font-bold">Eng qimmat akkountlar</h1>
                 <div className="flex items-center gap-10 flex-wrap mt-10 ">
