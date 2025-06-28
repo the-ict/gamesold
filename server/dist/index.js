@@ -6,13 +6,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const session = require("express-session");
 const passport = require("passport");
+const http_1 = require("http");
+const socket_io_1 = require("socket.io");
 const mongoose_1 = __importDefault(require("mongoose"));
+const multer_1 = __importDefault(require("multer"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
-const socket_io_1 = require("socket.io");
-const http_1 = require("http");
 dotenv_1.default.config();
 require("./routes/authPassport");
+const path_1 = __importDefault(require("path"));
 const Message = require("./models/Message");
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)({
@@ -27,24 +29,27 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-const multer = require("multer");
-const storage = multer.diskStorage({
+// the configuration of multer
+const uploadPathName = path_1.default.join(__dirname, "upload");
+console.log(uploadPathName);
+const storage = multer_1.default.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, "uploads");
+        cb(null, uploadPathName);
     },
     filename: (req, file, cb) => {
-        cb(null, Date.now() + "-" + file.originalname);
+        cb(null, `${req.name + file.originalname}`);
     },
 });
-const upload = multer({ storage: storage }).single("file");
-app.post("/upload", (req, res) => {
-    upload(req, res, (err) => {
-        if (err) {
-            console.log(err);
-            return res.status(400).json({ message: "Error uploading file", err });
-        }
-        return res.status(200).json({ message: "File uploaded successfully" });
-    });
+const upload = (0, multer_1.default)({ storage });
+app.post("/upload", upload.single("file"), (req, res) => {
+    try {
+        console.log(req.file); // Fayl haqida info
+        res.send("File uploaded successfully");
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).send("There's an error during upload");
+    }
 });
 const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/game-accounts";
