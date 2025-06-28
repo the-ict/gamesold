@@ -17,7 +17,7 @@ const Message = require("./models/Message");
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)({
     origin: "http://localhost:5173",
-    credentials: true
+    credentials: true,
 }));
 app.use(express_1.default.json());
 app.use(session({
@@ -27,6 +27,25 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+const multer = require("multer");
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "uploads");
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + "-" + file.originalname);
+    },
+});
+const upload = multer({ storage: storage }).single("file");
+app.post("/upload", (req, res) => {
+    upload(req, res, (err) => {
+        if (err) {
+            console.log(err);
+            return res.status(400).json({ message: "Error uploading file", err });
+        }
+        return res.status(200).json({ message: "File uploaded successfully" });
+    });
+});
 const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/game-accounts";
 const connectDB = async () => {

@@ -14,10 +14,12 @@ const Message = require("./models/Message");
 
 const app = express();
 
-app.use(cors({
-  origin: "http://localhost:5173",
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 app.use(
@@ -30,6 +32,7 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
+
 
 const PORT = process.env.PORT || 5000;
 const MONGO_URI =
@@ -63,13 +66,13 @@ app.get(
 
 app.get("/google/me", (req: any, res: Response) => {
   try {
-    console.log("requesting")
-    console.log(req.user)
+    console.log("requesting");
+    console.log(req.user);
     if (req.isAuthenticated()) {
-      console.log("user informations: ", req.user)
+      console.log("user informations: ", req.user);
       res.send(req.user);
-    }else {
-      res.send("You have'nt registreted before")
+    } else {
+      res.send("You have'nt registreted before");
     }
   } catch (error) {
     res.status(401).json({ message: "Google informations not founded" });

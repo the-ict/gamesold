@@ -4,15 +4,21 @@ import BackgroundImage from "../assets/user-page-banner.svg";
 import UserProfile from "../assets/profile-avatar.svg";
 import { SlSettings } from "react-icons/sl";
 import Footer from "@/components/Footer";
-import { BiEdit } from "react-icons/bi";
+import { BiAddToQueue, BiEdit } from "react-icons/bi";
+
+import PubgImg from "../assets/pubg1.png";
+import Cod from "../assets/callofduty.png";
+import Fortnite from "../assets/fortnite.png";
 
 import NotFound from "@/assets/goldie-no-results.svg";
 import SidebarDrawer from "@/components/SidebarDrawer";
 import useStore from "../store";
 import axios from "axios";
+import { CgAdd } from "react-icons/cg";
 
 export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
+  const [newAccountOpen, setNewAccountOpen] = React.useState(false);
 
   const { userId, setUserId } = useStore();
 
@@ -24,8 +30,8 @@ export default function Dashboard() {
             withCredentials: true,
           });
 
-          if(res.data) {
-            setUserId(res.data._id)
+          if (res.data) {
+            setUserId(res.data._id);
           }
         } catch (error) {
           alert(error);
@@ -33,8 +39,17 @@ export default function Dashboard() {
       }
     };
 
-    setGoogleInfo()
+    setGoogleInfo();
   }, []);
+
+
+  const handleNewAccount = async() => {
+    try {
+      const response = axios.post("")
+    } catch (error) {
+      
+    }
+  }
   return (
     <React.Fragment>
       <Navbar />
@@ -109,11 +124,109 @@ export default function Dashboard() {
               </div>
             </div>
 
-            <SlSettings
-              onClick={() => setSidebarOpen(true)}
-              className="text-gray-400 cursor-pointer hover:text-white transition-colors duration-300"
-              size={30}
-            />
+            <div className="flex items-center gap-5">
+              <SlSettings
+                onClick={() => setSidebarOpen(true)}
+                className="text-gray-400 cursor-pointer hover:text-white transition-colors duration-300"
+                size={30}
+              />
+
+              <CgAdd
+                className="text-gray-400 cursor-pointer hover:text-white transition-colors duration-300"
+                size={30}
+                onClick={() => setNewAccountOpen(true)}
+              />
+
+              {/* sidebar drawer */}
+              {newAccountOpen && (
+                <SidebarDrawer
+                  sidebarBackgroundColor="bg-[#222]"
+                  sidebarWidth="w-[500px]"
+                  sidebarName="Hisobni sotish"
+                  sidebarSide="right-0"
+                  setSidebarOpen={setNewAccountOpen}
+                >
+                  <form className="flex flex-col justify-center text-white px-5 gap-[1rem]">
+                    <div>
+                      <h1 className="text-2xl font-bold">
+                        O'yin turini tanlang!
+                      </h1>
+                      <select className="px-5 border rounded-[5px] outline-none py-3 bg-[#000] w-full mt-[50px]">
+                        <option value="pubg">Pubg Mobile</option>
+                        <option value="fortnite">Fortnite</option>
+                        <option value="callofduty">Call of Duty</option>
+                      </select>
+                    </div>
+                    <input
+                      type="text"
+                      placeholder="Hisob uchun nom"
+                      className="px-5 py-3 border-2 w-[100%]"
+                    />
+
+                    <input
+                      type="text"
+                      placeholder="Hisob malumotlari"
+                      className="px-5 py-3 border-2 w-[100%]"
+                    />
+
+                    <input
+                      type="number"
+                      placeholder="Narxi"
+                      className="px-5 py-3 border-2 w-[100%]"
+                    />
+                    <select className="px-5 border rounded-[5px] outline-none py-3 bg-[#000] w-full cursor-pointer">
+                      {[
+                        "Farg'ona",
+                        "Toshkent",
+                        "Andijon",
+                        "Buxoro",
+                        "Jizzax",
+                        "Namangan",
+                        "Navoiy",
+                        "Qashqadaryo",
+                        "Samarqand",
+                        "Surxondaryo",
+                        "Sirdaryo",
+                        "Xorazm",
+                        "Qoraqalpoqiston",
+                      ].map((item, index) => (
+                        <option key={index} value={item}>
+                          {item}
+                        </option>
+                      ))}
+                    </select>
+
+                    <h1 className="text-2xl font-bold">Rasm</h1>
+                    <div className="border-t-2">
+                      <label htmlFor="fileinput">
+                        <BiAddToQueue className="w-full h-[150px] object-contain rounded-[10px] cursor-pointer" />
+                      </label>
+                      <input
+                        id="fileinput"
+                        type="file"
+                        style={{ display: "none" }}
+                      />
+                    </div>
+
+                    <h1 className="text-2xl font-bold">Video</h1>
+                    <div className="border-t-2">
+                      <label htmlFor="fileinput">
+                        <BiAddToQueue className="w-full h-[150px] object-contain rounded-[10px] cursor-pointer" />
+                      </label>
+                      <input
+                        id="fileinput"
+                        type="file"
+                        style={{ display: "none" }}
+                      />
+                    </div>
+
+                    <button className="bg-red-500 hover:bg-red-600 cursor-pointer py-3 w-full">
+                      Sotish
+                    </button>
+                  </form>
+                </SidebarDrawer>
+              )}
+            </div>
           </div>
           <div className="flex items-center gap-5 mt-3">
             <span className="text-gray-400">ID: 123456789</span>
