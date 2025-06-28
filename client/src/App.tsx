@@ -9,7 +9,6 @@ import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Messages from "./pages/Messages.p";
 
-
 export default function App() {
   return (
     <Router>
@@ -21,6 +20,7 @@ export default function App() {
         <Route path="/account/:id" element={<SingleAccount />} />
         <Route path="/search" element={<SearchedForm />} />
         <Route path="/messages" element={<Messages />} />
+        <Route path="/search" element={<SearchedForm />} />
       </Routes>
     </Router>
   );
