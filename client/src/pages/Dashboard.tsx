@@ -15,12 +15,31 @@ import SidebarDrawer from "@/components/SidebarDrawer";
 import useStore from "../store";
 import axios from "axios";
 import { CgAdd } from "react-icons/cg";
+import type { IGameAccount } from "@/types/GameAccount";
 
 export default function Dashboard() {
-  const [sidebarOpen, setSidebarOpen] = React.useState(false);
-  const [newAccountOpen, setNewAccountOpen] = React.useState(false);
+  const [sidebarOpen, setSidebarOpen] = React.useState<boolean>(false);
+  const [newAccountOpen, setNewAccountOpen] = React.useState<boolean>(false);
 
   const { userId, setUserId } = useStore();
+
+  const [accountInformation, setAccountInformation] =
+    React.useState<IGameAccount>({
+      author: String(userId),
+      game: "PUBG",
+      region: "Farg'ona",
+      price: 0,
+      description: "",
+      image: "",
+      seller: String(userId),
+      status: "available",
+      video: "",
+    });
+
+  const handleChangeNewAccount = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setAccountInformation((prev) => ({ ...prev, [name]: value }));
+  };
 
   useEffect(() => {
     const setGoogleInfo = async () => {
@@ -42,14 +61,11 @@ export default function Dashboard() {
     setGoogleInfo();
   }, []);
 
-
-  const handleNewAccount = async() => {
+  const handleNewAccount = async () => {
     try {
-      const response = axios.post("")
-    } catch (error) {
-      
-    }
-  }
+      const response = axios.post("");
+    } catch (error) {}
+  };
   return (
     <React.Fragment>
       <Navbar />
@@ -146,35 +162,66 @@ export default function Dashboard() {
                   sidebarSide="right-0"
                   setSidebarOpen={setNewAccountOpen}
                 >
-                  <form className="flex flex-col justify-center text-white px-5 gap-[1rem]">
+                  <form
+                    onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+                      e.preventDefault();
+                    }}
+                    className="flex flex-col justify-center text-white px-5 gap-[1rem]"
+                  >
                     <div>
                       <h1 className="text-2xl font-bold">
                         O'yin turini tanlang!
                       </h1>
-                      <select className="px-5 border rounded-[5px] outline-none py-3 bg-[#000] w-full mt-[50px]">
-                        <option value="pubg">Pubg Mobile</option>
-                        <option value="fortnite">Fortnite</option>
-                        <option value="callofduty">Call of Duty</option>
+                      <select
+                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                          setAccountInformation((prev) => ({
+                            ...prev,
+                            game: e.target.value as
+                              | "PUBG"
+                              | "Fortnite"
+                              | "Call of Duty",
+                          }));
+                        }}
+                        className="px-5 border rounded-[5px] outline-none py-3 bg-[#000] w-full mt-[50px]"
+                        defaultChecked
+                      >
+                        <option value="PUBG">Pubg Mobile</option>
+                        <option value="Fortnite">Fortnite</option>
+                        <option value="Call of Duty">Call of Duty</option>
                       </select>
                     </div>
                     <input
                       type="text"
                       placeholder="Hisob uchun nom"
                       className="px-5 py-3 border-2 w-[100%]"
+                      onChange={(e) => handleChangeNewAccount(e)}
+                      name="name"
                     />
 
                     <input
                       type="text"
                       placeholder="Hisob malumotlari"
                       className="px-5 py-3 border-2 w-[100%]"
+                      onChange={(e) => handleChangeNewAccount(e)}
+                      name="description"
                     />
 
                     <input
                       type="number"
                       placeholder="Narxi"
                       className="px-5 py-3 border-2 w-[100%]"
+                      onChange={(e) => handleChangeNewAccount(e)}
+                      name="price"
                     />
-                    <select className="px-5 border rounded-[5px] outline-none py-3 bg-[#000] w-full cursor-pointer">
+                    <select
+                      onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                        setAccountInformation((prev) => ({
+                          ...prev,
+                          region: e.target.value,
+                        }));
+                      }}
+                      className="px-5 border rounded-[5px] outline-none py-3 bg-[#000] w-full cursor-pointer"
+                    >
                       {[
                         "Farg'ona",
                         "Toshkent",
@@ -220,7 +267,12 @@ export default function Dashboard() {
                       />
                     </div>
 
-                    <button className="bg-red-500 hover:bg-red-600 cursor-pointer py-3 w-full">
+                    <button
+                      onClick={() => {
+                        console.log(accountInformation, "account infomration");
+                      }}
+                      className="bg-red-500 hover:bg-red-600 cursor-pointer py-3 w-full"
+                    >
                       Sotish
                     </button>
                   </form>

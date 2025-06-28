@@ -1,15 +1,17 @@
 import express, { Request, Response } from "express";
 const session = require("express-session");
 const passport = require("passport");
+import { createServer } from "http";
+import { Server } from "socket.io";
 import mongoose from "mongoose";
+import multer from "multer";
 import dotenv from "dotenv";
 import cors from "cors";
-import { Server } from "socket.io";
-import { createServer } from "http";
 
 dotenv.config();
 
 import "./routes/authPassport";
+import path from "path";
 const Message = require("./models/Message");
 
 const app = express();
@@ -33,6 +35,30 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+// the configuration of multer
+const uploadPathName = path.join(__dirname, "upload");
+console.log(uploadPathName);
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, uploadPathName);
+  },
+  filename: (req: any, file, cb) => {
+    cb(null, `${req.name + file.originalname}`);
+  },
+});
+
+const upload = multer({ storage });
+
+app.post("/upload", upload.single("file"), (req: Request, res: Response) => {
+  try {
+    console.log(req.file); // Fayl haqida info
+    res.send("File uploaded successfully");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("There's an error during upload");
+  }
+});
 
 const PORT = process.env.PORT || 5000;
 const MONGO_URI =
