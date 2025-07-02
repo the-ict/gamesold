@@ -1,14 +1,10 @@
-import Navbar from "@/components/Navbar";
-import React, { useEffect } from "react";
 import BackgroundImage from "../assets/user-page-banner.svg";
 import UserProfile from "../assets/profile-avatar.svg";
-import { SlSettings } from "react-icons/sl";
-import Footer from "@/components/Footer";
 import { BiAddToQueue, BiEdit } from "react-icons/bi";
-
-import PubgImg from "../assets/pubg1.png";
-import Cod from "../assets/callofduty.png";
-import Fortnite from "../assets/fortnite.png";
+import { SlSettings } from "react-icons/sl";
+import Navbar from "@/components/Navbar";
+import React, { useEffect } from "react";
+import Footer from "@/components/Footer";
 
 import NotFound from "@/assets/goldie-no-results.svg";
 import SidebarDrawer from "@/components/SidebarDrawer";
@@ -16,10 +12,15 @@ import useStore from "../store";
 import axios from "axios";
 import { CgAdd } from "react-icons/cg";
 import type { IGameAccount } from "@/types/GameAccount";
+import Description from "@/components/Description";
 
 export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = React.useState<boolean>(false);
   const [newAccountOpen, setNewAccountOpen] = React.useState<boolean>(false);
+  const [openDescription, setOpenDescription] = React.useState<boolean>(false);
+  const [loader, setLoader] = React.useState<boolean>(false);
+  const [imageFile, setImageFile] = React.useState<File[]>([]);
+  const [videoFile, setVideoFile] = React.useState<File[]>([]);
 
   const { userId, setUserId } = useStore();
 
@@ -34,6 +35,7 @@ export default function Dashboard() {
       seller: String(userId),
       status: "available",
       video: "",
+      name: "",
     });
 
   const handleChangeNewAccount = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,9 +64,74 @@ export default function Dashboard() {
   }, []);
 
   const handleNewAccount = async () => {
+    if (accountInformation.name === "") return;
+    if (accountInformation.price === 0) return;
+    if (accountInformation.region === "") return;
+
+    console.log(accountInformation.description, "bu description");
+
+    if (accountInformation.description === "") return;
+
+    setLoader(true);
+
     try {
-      const response = axios.post("");
-    } catch (error) {}
+      if (imageFile.length != 0) {
+        const formData = new FormData();
+
+        formData.append("file", imageFile[0]);
+        const imageUploadResponse = await axios.post(
+          "http://localhost:5000/upload",
+          formData
+        );
+        if (imageUploadResponse.data) {
+          accountInformation.image = imageFile[0].name;
+        } else {
+          setLoader(false);
+          alert("Yuklashda xatolik mavjud");
+        }
+      } else {
+        alert("Rasmni tanlang bu majburiy");
+        setLoader(false);
+        return;
+      }
+
+      if (videoFile.length != 0) {
+        const formData = new FormData();
+
+        formData.append("file", videoFile[0]);
+        const videoUploadResponse = await axios.post(
+          "http://localhost:5000/upload",
+          formData
+        );
+        if (videoUploadResponse.data) {
+          accountInformation.video = videoFile[0].name;
+        } else {
+          setLoader(false);
+          alert("Yuklashda xatolik mavjud");
+        }
+      } else {
+        alert("Videoni tanlang bu majburiy");
+        setLoader(false);
+        return;
+      }
+
+      console.log(accountInformation);
+
+      const response = await axios.post(
+        "http://localhost:5000/api/game",
+        accountInformation
+      );
+
+      if (response.data) {
+        window.location.reload();
+      } else {
+        setLoader(false);
+        alert("Yuklashda xatolik mavjud, keyinroq urinib kor'ing!");
+      }
+    } catch (error) {
+      setLoader(false);
+      alert("Yuklashda xatolik mavjud, keyinroq urinib kor'ing!");
+    }
   };
   return (
     <React.Fragment>
@@ -157,7 +224,7 @@ export default function Dashboard() {
               {newAccountOpen && (
                 <SidebarDrawer
                   sidebarBackgroundColor="bg-[#222]"
-                  sidebarWidth="w-[500px]"
+                  sidebarWidth="w-[500px] right-sidebar-drawer"
                   sidebarName="Hisobni sotish"
                   sidebarSide="right-0"
                   setSidebarOpen={setNewAccountOpen}
@@ -198,12 +265,13 @@ export default function Dashboard() {
                       name="name"
                     />
 
-                    <input
-                      type="text"
-                      placeholder="Hisob malumotlari"
-                      className="px-5 py-3 border-2 w-[100%]"
-                      onChange={(e) => handleChangeNewAccount(e)}
-                      name="description"
+                    <Description
+                      onChange={(html) =>
+                        setAccountInformation((prev) => ({
+                          ...prev,
+                          description: html,
+                        }))
+                      }
                     />
 
                     <input
@@ -244,36 +312,88 @@ export default function Dashboard() {
                     </select>
 
                     <h1 className="text-2xl font-bold">Rasm</h1>
-                    <div className="border-t-2">
-                      <label htmlFor="fileinput">
-                        <BiAddToQueue className="w-full h-[150px] object-contain rounded-[10px] cursor-pointer" />
+                    <div className="border-t-1">
+                      <label
+                        htmlFor="fileinput"
+                        className="h-[150px] mt-[10px] w-full flex items-center justify-center"
+                      >
+                        {imageFile[0] ? (
+                          <img
+                            src={URL.createObjectURL(imageFile[0])}
+                            alt="image downloaded"
+                            className="w-full h-full object-contain rounded-[10px] cursor-pointer"
+                          />
+                        ) : (
+                          <BiAddToQueue className="w-full h-[50px] object-contain rounded-[10px] cursor-pointer" />
+                        )}
                       </label>
                       <input
                         id="fileinput"
+                        onChange={(e) => {
+                          if (e.target.files) {
+                            setImageFile([e.target.files[0]]);
+                          }
+                        }}
                         type="file"
                         style={{ display: "none" }}
                       />
                     </div>
 
                     <h1 className="text-2xl font-bold">Video</h1>
-                    <div className="border-t-2">
-                      <label htmlFor="fileinput">
-                        <BiAddToQueue className="w-full h-[150px] object-contain rounded-[10px] cursor-pointer" />
+                    <div className="border-t-1">
+                      <label
+                        htmlFor="fileinput2"
+                        className="h-[150px] w-full flex items-center justify-center"
+                      >
+                        {videoFile[0] ? (
+                          <img
+                            src={URL.createObjectURL(videoFile[0])}
+                            alt="video downloaded"
+                            className="w-full h-full object-contain rounded-[10px] cursor-pointer"
+                          />
+                        ) : (
+                          <BiAddToQueue className="w-full h-[50px] object-contain rounded-[10px] cursor-pointer" />
+                        )}
                       </label>
                       <input
-                        id="fileinput"
+                        id="fileinput2"
                         type="file"
+                        onChange={(e) => {
+                          if (e.target.files) {
+                            setVideoFile([e.target.files[0]]);
+                          }
+                        }}
                         style={{ display: "none" }}
                       />
                     </div>
 
                     <button
-                      onClick={() => {
-                        console.log(accountInformation, "account infomration");
-                      }}
-                      className="bg-red-500 hover:bg-red-600 cursor-pointer py-3 w-full"
+                      onClick={handleNewAccount}
+                      className="bg-red-500 hover:bg-red-600 cursor-pointer py-3 w-full text-white flex items-center justify-center"
                     >
-                      Sotish
+                      {loader ? (
+                        <div role="status">
+                          <svg
+                            aria-hidden="true"
+                            className="w-6 h-6 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                            viewBox="0 0 100 101"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                              fill="currentColor"
+                            />
+                            <path
+                              d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                              fill="currentFill"
+                            />
+                          </svg>
+                          <span className="sr-only">Loading...</span>
+                        </div>
+                      ) : (
+                        "Sotish"
+                      )}
                     </button>
                   </form>
                 </SidebarDrawer>

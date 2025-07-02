@@ -40,6 +40,34 @@
     animation-duration: 300ms;
 }
 
+@keyframes slideInRight {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOutRight {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.right-sidebar-drawer {
+    animation: slideInRight 0.3s forwards;
+    animation-duration: 300ms;
+}
+
+.right-sidebar-drawer-exit {
+    animation: slideOutRight 0.3s forwards;
+    animation-duration: 300ms;
+}
+
 .left-sidebar {
     scrollbar-width: thin;
     scrollbar-color: #555 #333;
