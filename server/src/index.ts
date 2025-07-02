@@ -34,6 +34,7 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(express.urlencoded({ extended: true })); // ✅ MUHIM
 
 // the configuration of multer
 const uploadPathName = path.join(__dirname, "upload");
@@ -44,7 +45,7 @@ const storage = multer.diskStorage({
     cb(null, uploadPathName);
   },
   filename: (req: any, file, cb) => {
-    cb(null, `${req.name + file.originalname}`);
+    cb(null, `${file.originalname}`);
   },
 });
 

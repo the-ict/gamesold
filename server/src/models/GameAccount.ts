@@ -11,6 +11,7 @@ export interface IGameAccount extends Document {
   buyer?: mongoose.Types.ObjectId;
   status: "available" | "pending" | "sold";
   video: string;
+  name: string;
 }
 
 const gameAccountSchema = new Schema(
@@ -29,6 +30,7 @@ const gameAccountSchema = new Schema(
       default: "available",
     },
     video: { type: String, required: true },
+    name: { type: String, required: true },
   },
   {
     timestamps: true,

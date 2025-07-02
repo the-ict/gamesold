@@ -49,6 +49,7 @@ const gameAccountSchema = new mongoose_1.Schema({
         default: "available",
     },
     video: { type: String, required: true },
+    name: { type: String, required: true },
 }, {
     timestamps: true,
 });

@@ -9,4 +9,5 @@ export interface IGameAccount {
   buyer?: string;
   status: "available" | "pending" | "sold";
   video: string;
+  name: string;
 }
