@@ -89,4 +89,15 @@ router.delete("/:id", async (req, res, next) => {
         next(error);
     }
 });
+router.get("/search/most-expensive", async (req, res) => {
+    try {
+        const mostExpensive = await GameAccount_1.default.find({ status: "available" })
+            .sort({ price: -1 })
+            .limit(8);
+        res.json(mostExpensive);
+    }
+    catch (error) {
+        res.status(404).send("No accounts found");
+    }
+});
 module.exports = router;
