@@ -10,4 +10,5 @@ export interface IGameAccount {
   status: "available" | "pending" | "sold";
   video: string;
   name: string;
+  _id: string;
 }
