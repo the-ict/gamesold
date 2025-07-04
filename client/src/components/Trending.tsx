@@ -21,7 +21,7 @@ export default function Trending() {
         console.log(result.data);
         if (result.data) {
           setGameAccounts(result.data);
-          setLoading(false)
+          setLoading(false);
         }
       } catch (error) {
         alert("Xatolik yuz berdi");
