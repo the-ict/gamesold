@@ -33,7 +33,7 @@ export default function SingleAccount() {
             {
                 sidebarOpen && (
                     <SidebarDrawer
-                        sidebarBackgroundColor="bg-white text-black"
+                        sidebarBackgroundColor="bg-[#1e1f28] text-white"
                         openAnimation={true} closeAnimation={false} sidebarName="Sotib olish" setSidebarOpen={setSidebarOpen} sidebarWidth="w-[400px]" sidebarSide="left-0">
                         <div className="flex flex-col justify-between h-[95%]">
                             <div className="flex items-center gap-5 mb-5 bg-[#13a13a] text-white p-5 rounded-[10px]">
@@ -100,7 +100,7 @@ export default function SingleAccount() {
                         </div>
                     </div>
 
-                    <div className="mt-10 p-5 bg-gray-200 text-black">
+                    <div className="mt-10 p-5 bg-[#27282D] text-white">
                         Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate ut, explicabo suscipit culpa animi quisquam non aut quos eaque harum adipisci, possimus neque consequatur illo autem ullam repellat vero. Necessitatibus!
                         Lorem ipsum, dolor sit amet consectetur adipisicing elit. Mollitia nemo modi eius? Labore tempora ea reprehenderit? Dicta aperiam voluptatem eligendi? Adipisci quas exercitationem impedit. Unde ratione numquam voluptas quod delectus?
                         Lorem ipsum, dolor sit amet consectetur adipisicing elit. Velit dolor mollitia sapiente corrupti, dignissimos ullam. Blanditiis vero consectetur officiis quae assumenda accusamus corrupti molestias at, ullam ad id aperiam! Reiciendis!

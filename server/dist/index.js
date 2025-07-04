@@ -115,11 +115,14 @@ const socketIo = new socket_io_1.Server(httpServer, {
     },
 });
 socketIo.on("connection", (socket) => {
-    console.log("New client connected", socket.id);
-    socket.on("disconnect", () => {
-        console.log("Client disconnected", socket.id);
+    console.log("Client connected");
+    socket.on("message", (message) => {
+        console.log(`Received message from client: ${message}`);
+        socketIo.emit("message", `Server response: ${message}`);
     });
-    // Add more socket event handlers here
+    socket.on("disconnect", () => {
+        console.log("Client disconnected");
+    });
 });
 socketIo.on("send_message", async (data) => {
     console.log("Message received:", data);

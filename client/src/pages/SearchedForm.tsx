@@ -1,7 +1,7 @@
 import { FaArrowDown } from "react-icons/fa";
 import Navbar from "../components/Navbar";
 import Footer from "@/components/Footer";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 
 export default function SearchedForm() {
@@ -32,8 +32,7 @@ export default function SearchedForm() {
                     placeholder="Min"
                     className="p-2 border border-gray-300 rounded w-[45%]"
                   />
-                  
-                  
+
                   <input
                     type="number"
                     placeholder="Max"
@@ -102,111 +101,31 @@ export default function SearchedForm() {
               </button>
             </div>
             <div className="flex items-center w-[70%] gap-10 flex-wrap mt-5">
-              <div className="w-[250px] relative border group">
-                <p className="absolute bottom-0 left-0 right-0 top-0 h-max z-10 group-hover:hidden text-center w-full bg-black text-white py-3">
-                  Game
-                </p>
-                <img
-                  className="w-full h-full object-contain blur-[5px] hover:blur-none cursor-pointer  transition-all duration-300 ease-in-out"
-                  src="https://www.g2g.com/img/affiliate-home.webp"
-                  alt=""
-                />
-                <p className="absolute bottom-0 left-0 right-0 text-center w-full z-10 bg-black group-hover:hidden text-white py-3">
-                  narxi: 100$
-                </p>
-              </div>
-              <div className="w-[250px] relative border group">
-                <p className="absolute bottom-0 left-0 right-0 top-0 h-max z-10 group-hover:hidden text-center w-full bg-black text-white py-3">
-                  Game
-                </p>
-                <img
-                  className="w-full h-full object-contain blur-[5px] hover:blur-none cursor-pointer  transition-all duration-300 ease-in-out"
-                  src="https://www.g2g.com/img/affiliate-home.webp"
-                  alt=""
-                />
-                <p className="absolute bottom-0 left-0 right-0 text-center w-full z-10 bg-black group-hover:hidden text-white py-3">
-                  narxi: 100$
-                </p>
-              </div>
-              <div className="w-[250px] relative border group">
-                <p className="absolute bottom-0 left-0 right-0 top-0 h-max z-10 group-hover:hidden text-center w-full bg-black text-white py-3">
-                  Game
-                </p>
-                <img
-                  className="w-full h-full object-contain blur-[5px] hover:blur-none cursor-pointer  transition-all duration-300 ease-in-out"
-                  src="https://www.g2g.com/img/affiliate-home.webp"
-                  alt=""
-                />
-                <p className="absolute bottom-0 left-0 right-0 text-center w-full z-10 bg-black group-hover:hidden text-white py-3">
-                  narxi: 100$
-                </p>
-              </div>
-              <div className="w-[250px] relative border group">
-                <p className="absolute bottom-0 left-0 right-0 top-0 h-max z-10 group-hover:hidden text-center w-full bg-black text-white py-3">
-                  Game
-                </p>
-                <img
-                  className="w-full h-full object-contain blur-[5px] hover:blur-none cursor-pointer  transition-all duration-300 ease-in-out"
-                  src="https://www.g2g.com/img/affiliate-home.webp"
-                  alt=""
-                />
-                <p className="absolute bottom-0 left-0 right-0 text-center w-full z-10 bg-black group-hover:hidden text-white py-3">
-                  narxi: 100$
-                </p>
-              </div>
-
-              <div className="w-[250px] relative border group">
-                <p className="absolute bottom-0 left-0 right-0 top-0 h-max z-10 group-hover:hidden text-center w-full bg-black text-white py-3">
-                  Game
-                </p>
-                <img
-                  className="w-full h-full object-contain blur-[5px] hover:blur-none cursor-pointer  transition-all duration-300 ease-in-out"
-                  src="https://www.g2g.com/img/affiliate-home.webp"
-                  alt=""
-                />
-                <p className="absolute bottom-0 left-0 right-0 text-center w-full z-10 bg-black group-hover:hidden text-white py-3">
-                  narxi: 100$
-                </p>
-              </div>
-              <div className="w-[250px] relative border group">
-                <p className="absolute bottom-0 left-0 right-0 top-0 h-max z-10 group-hover:hidden text-center w-full bg-black text-white py-3">
-                  Game
-                </p>
-                <img
-                  className="w-full h-full object-contain blur-[5px] hover:blur-none cursor-pointer  transition-all duration-300 ease-in-out"
-                  src="https://www.g2g.com/img/affiliate-home.webp"
-                  alt=""
-                />
-                <p className="absolute bottom-0 left-0 right-0 text-center w-full z-10 bg-black group-hover:hidden text-white py-3">
-                  narxi: 100$
-                </p>
-              </div>
-              <div className="w-[250px] relative border group">
-                <p className="absolute bottom-0 left-0 right-0 top-0 h-max z-10 group-hover:hidden text-center w-full bg-black text-white py-3">
-                  Game
-                </p>
-                <img
-                  className="w-full h-full object-contain blur-[5px] hover:blur-none cursor-pointer  transition-all duration-300 ease-in-out"
-                  src="https://www.g2g.com/img/affiliate-home.webp"
-                  alt=""
-                />
-                <p className="absolute bottom-0 left-0 right-0 text-center w-full z-10 bg-black group-hover:hidden text-white py-3">
-                  narxi: 100$
-                </p>
-              </div>
-              <div className="w-[250px] relative border group">
-                <p className="absolute bottom-0 left-0 right-0 top-0 h-max z-10 group-hover:hidden text-center w-full bg-black text-white py-3">
-                  Game
-                </p>
-                <img
-                  className="w-full h-full object-contain blur-[5px] hover:blur-none cursor-pointer  transition-all duration-300 ease-in-out"
-                  src="https://www.g2g.com/img/affiliate-home.webp"
-                  alt=""
-                />
-                <p className="absolute bottom-0 left-0 right-0 text-center w-full z-10 bg-black group-hover:hidden text-white py-3">
-                  narxi: 100$
-                </p>
-              </div>
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((gameAccount) => (
+                <Link to={`/account/${gameAccount}`}>
+                  <div
+                    key={gameAccount}
+                    className="w-[250px] relative group h-[400px]"
+                  >
+                    <p className="absolute bottom-0 left-0 right-0 top-0 h-max z-10 group-hover:hidden text-center w-full bg-black text-white py-3">
+                      Game
+                    </p>
+                    <img
+                      className="w-full h-full object-contain blur-[5px] hover:blur-none cursor-pointer  transition-all duration-300 ease-in-out"
+                      src="https://www.g2g.com/img/affiliate-home.webp"
+                      alt=""
+                    />
+                    <div className="absolute bottom-0 left-0 font-bold right-0 h-max z-10 text-center w-full bg-gray-200 text-black py-3">
+                      <p className="text-sm w-full bg-red-500 text-white py-1">
+                        Narxi: 100$
+                      </p>
+                      <p className="text-sm w-full bg-gray-500 text-white py-1 mt-3">
+                        Yashash joyi: Toshkent
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+              ))}
             </div>
           </div>
         </div>
