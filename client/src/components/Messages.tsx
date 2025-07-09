@@ -16,7 +16,7 @@ socket.on("disconnect", () => {
   console.log("Disconnected from server");
 });
 
-socket.on("message", (message) => {
+socket.on("message", (message: string) => {
   console.log(`Received message: ${message}`);
 });
 
