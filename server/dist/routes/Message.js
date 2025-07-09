@@ -3,20 +3,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const router = require('express').Router();
+const router = require("express").Router();
 const Message_1 = __importDefault(require("../models/Message"));
 // getting chat messages
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
     try {
         const { sender, receiver } = req.query;
         if (!sender || !receiver) {
-            return res.status(400).json({ error: "Sender and receiver are required" });
+            return res
+                .status(400)
+                .json({ error: "Sender and receiver are required" });
         }
         const messages = await Message_1.default.find({
             $or: [
                 { sender, receiver },
-                { sender: receiver, receiver: sender }
-            ]
+                { sender: receiver, receiver: sender },
+            ],
         }).sort({ timestamp: 1 });
         res.json(messages);
     }
@@ -26,7 +28,7 @@ router.get('/', async (req, res) => {
     }
 });
 // sending a chat message
-router.post('/', async (req, res) => {
+router.post("/", async (req, res) => {
     try {
         const { sender, receiver, content, chatId } = req.body;
         if (!sender || !receiver || !content || !chatId) {

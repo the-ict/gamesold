@@ -1,23 +1,24 @@
-const router = require('express').Router();
-import mongoose from 'mongoose';
-import Messages from '../models/Message';
-import { Request, Response } from 'express';
-
+const router = require("express").Router();
+import mongoose from "mongoose";
+import Messages from "../models/Message";
+import { Request, Response } from "express";
 
 // getting chat messages
-router.get('/', async (req: Request, res: Response) => {
+router.get("/", async (req: Request, res: Response) => {
   try {
     const { sender, receiver } = req.query;
 
     if (!sender || !receiver) {
-      return res.status(400).json({ error: "Sender and receiver are required" });
+      return res
+        .status(400)
+        .json({ error: "Sender and receiver are required" });
     }
 
     const messages = await Messages.find({
       $or: [
         { sender, receiver },
-        { sender: receiver, receiver: sender }
-      ]
+        { sender: receiver, receiver: sender },
+      ],
     }).sort({ timestamp: 1 });
 
     res.json(messages);
@@ -28,7 +29,7 @@ router.get('/', async (req: Request, res: Response) => {
 });
 
 // sending a chat message
-router.post('/', async (req: Request, res: Response) => {
+router.post("/", async (req: Request, res: Response) => {
   try {
     const { sender, receiver, content, chatId } = req.body;
 
@@ -52,5 +53,4 @@ router.post('/', async (req: Request, res: Response) => {
   }
 });
 
-
-module.exports = router
+module.exports = router;
