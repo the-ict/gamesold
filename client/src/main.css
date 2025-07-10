@@ -1,95 +1,95 @@
 .infiniteAnimation {
-    animation: infiniteScroll 50s linear infinite;
+  animation: infiniteScroll 50s linear infinite;
 }
 
 @keyframes infiniteScroll {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-100%);
-    }
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
 }
 
 /* write animation for sidebar drawer */
 @keyframes slideIn {
-    0% {
-        transform: translateX(-100%);
-    }
-    100% {
-        transform: translateX(0);
-    }
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
 
 @keyframes slideOut {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-100%);
-    }
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
 }
 
 .sidebar-drawer {
-    animation: slideIn 0.3s forwards;
-    animation-duration: 300ms;
+  animation: slideIn 0.3s forwards;
+  animation-duration: 300ms;
 }
 
 .sidebar-drawer-exit {
-    animation: slideOut 0.3s forwards;
-    animation-duration: 300ms;
+  animation: slideOut 0.3s forwards;
+  animation-duration: 300ms;
 }
 
 @keyframes slideInRight {
-    0% {
-        transform: translateX(100%);
-    }
-    100% {
-        transform: translateX(0);
-    }
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
 
 @keyframes slideOutRight {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(100%);
-    }
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 .right-sidebar-drawer {
-    animation: slideInRight 0.3s forwards;
-    animation-duration: 300ms;
+  animation: slideInRight 0.3s forwards;
+  animation-duration: 300ms;
 }
 
 .right-sidebar-drawer-exit {
-    animation: slideOutRight 0.3s forwards;
-    animation-duration: 300ms;
+  animation: slideOutRight 0.3s forwards;
+  animation-duration: 300ms;
 }
 
 .left-sidebar {
-    scrollbar-width: thin;
-    scrollbar-color: #555 #333;
+  scrollbar-width: thin;
+  scrollbar-color: #555 #333;
 }
 
 .left-sidebar::-webkit-scrollbar {
-    width: 8px;
+  width: 8px;
 }
 
 .left-sidebar::-webkit-scrollbar-track {
-    background: #333;
+  background: #333;
 }
 
 .left-sidebar::-webkit-scrollbar-thumb {
-    background-color: #555;
-    border-radius: 10px;
+  background-color: #555;
+  border-radius: 10px;
 }
 
 .loader {
   width: 24px;
   height: 24px;
-  background: #FFF;
+  background: #fff;
   border-radius: 50%;
   display: inline-block;
   position: relative;
@@ -97,14 +97,14 @@
   animation: rotation 1s linear infinite;
 }
 .loader::after {
-  content: '';  
+  content: "";
   box-sizing: border-box;
   position: absolute;
   left: 3px;
   top: 5px;
   width: 6px;
   height: 6px;
-  color: #FF3D00;
+  color: #ff3d00;
   background: currentColor;
   border-radius: 50%;
   box-shadow: 12.5px 1px, 5px 11px;
@@ -117,4 +117,13 @@
   100% {
     transform: rotate(360deg);
   }
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
