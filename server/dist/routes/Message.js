@@ -3,49 +3,34 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const router = require("express").Router();
+const express_1 = __importDefault(require("express"));
 const Message_1 = __importDefault(require("../models/Message"));
-// getting chat messages
-router.get("/", async (req, res) => {
-    try {
-        const { sender, receiver } = req.query;
-        if (!sender || !receiver) {
-            return res
-                .status(400)
-                .json({ error: "Sender and receiver are required" });
-        }
-        const messages = await Message_1.default.find({
-            $or: [
-                { sender, receiver },
-                { sender: receiver, receiver: sender },
-            ],
-        }).sort({ timestamp: 1 });
-        res.json(messages);
-    }
-    catch (error) {
-        console.error("Error fetching messages:", error);
-        res.status(500).json({ error: "Internal server error" });
-    }
-});
-// sending a chat message
+const router = express_1.default.Router();
 router.post("/", async (req, res) => {
     try {
-        const { sender, receiver, content, chatId } = req.body;
-        if (!sender || !receiver || !content || !chatId) {
-            return res.status(400).json({ error: "All fields are required" });
-        }
-        const newMessage = new Message_1.default({
-            sender,
-            receiver,
-            content,
-            chatId,
-        });
-        await newMessage.save();
+        const newMessage = await Message_1.default.create(req.body);
         res.status(201).json(newMessage);
     }
     catch (error) {
-        console.error("Error sending message:", error);
-        res.status(500).json({ error: "Internal server error" });
+        res.status(500).json({ error: "Failed to create message" });
+    }
+});
+router.get("/:conversationId", async (req, res) => {
+    try {
+        const messages = await Message_1.default.find({
+            conversationId: req.params.conversationId,
+        });
+        if (messages) {
+            res.status(200).json(messages);
+        }
+        else {
+            res
+                .status(404)
+                .json("MNessages not found, may be conversationId is wrong!");
+        }
+    }
+    catch (error) {
+        res.status(500).json({ error: "Failed to get messages" });
     }
 });
 module.exports = router;

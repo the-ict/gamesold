@@ -106,22 +106,23 @@ app.get("/google/me", (req: any, res: Response) => {
   }
 });
 
-app.use((req: Request, res: Response, next: Function) => {
-  console.log(`${req.method} ${req.url}`);
-  next();
-});
+// app.use((req: Request, res: Response, next: Function) => {
+//   console.log(`${req.method} ${req.url}`);
+//   next();
+// });
 
 // importing routes
+const conversationRoutes = require("./routes/Conversation");
 const userAccountRoutes = require("./routes/UserAccount");
 const gameAccountRoutes = require("./routes/GameAccount");
 const messageRoutes = require("./routes/Message");
 const authRoutes = require("./routes/auth");
 
+app.use("/api/conversation", conversationRoutes);
 app.use("/api/game", gameAccountRoutes);
 app.use("/api/user", userAccountRoutes);
 app.use("/api/message", messageRoutes);
 app.use("/api/auth", authRoutes);
-app.use("/api/chat", require("./routes/Chat"));
 
 // socket.io setup
 const httpServer = createServer(app);
