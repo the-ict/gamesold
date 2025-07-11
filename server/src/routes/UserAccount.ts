@@ -73,4 +73,27 @@ router.post(
   }
 );
 
+router.put(
+  "/balance/:userId",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { userId } = req.params;
+      const { balance } = req.body;
+      const userAccount = await UserAccount.findByIdAndUpdate(
+        userId,
+        { balance },
+        { new: true }
+      );
+
+      if (!userAccount) {
+        return res.status(404).send("User account not found");
+      }
+
+      res.status(200).json(userAccount);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
 module.exports = router;

@@ -3,7 +3,7 @@ import UserProfile from "../assets/profile-avatar.svg";
 import { BiAddToQueue, BiEdit } from "react-icons/bi";
 import { SlSettings } from "react-icons/sl";
 import Navbar from "@/components/Navbar";
-import React, { useEffect } from "react";
+import React, { useEffect, useState, type ChangeEvent } from "react";
 import Footer from "@/components/Footer";
 
 import NotFound from "@/assets/goldie-no-results.svg";
@@ -13,14 +13,22 @@ import axios from "axios";
 import { CgAdd } from "react-icons/cg";
 import type { IGameAccount } from "@/types/GameAccount";
 import Description from "@/components/Description";
+import type { IUser } from "@/types/User";
+import { currencyFormatter } from "@/components/Trending";
+
+const IMAGE_URL = import.meta.env.VITE_PC;
 
 export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = React.useState<boolean>(false);
   const [newAccountOpen, setNewAccountOpen] = React.useState<boolean>(false);
   const [openDescription, setOpenDescription] = React.useState<boolean>(false);
+  const [route, setRoute] = useState<"Saqlanganlar" | "Hisob" | "Haqida">(
+    "Hisob"
+  );
   const [loader, setLoader] = React.useState<boolean>(false);
   const [imageFile, setImageFile] = React.useState<File[]>([]);
   const [videoFile, setVideoFile] = React.useState<File[]>([]);
+  const [user, setUser] = useState<IUser>({} as any);
 
   const { userId, setUserId } = useStore();
 
@@ -61,6 +69,23 @@ export default function Dashboard() {
     };
 
     setGoogleInfo();
+
+    const getUserInformations = async () => {
+      try {
+        const res = await axios.get(
+          "http://localhost:5000/api/user/" + localStorage.getItem("userId")
+        );
+
+        console.log(res.data);
+        setUser(res.data);
+      } catch (error) {
+        alert(error);
+      }
+    };
+
+    if (localStorage.getItem("userId")) {
+      getUserInformations();
+    }
   }, []);
 
   const handleNewAccount = async () => {
@@ -193,16 +218,22 @@ export default function Dashboard() {
           <div className="flex items-center justify-between relative">
             <div className="flex items-center gap-5">
               <img
-                src={UserProfile}
+                src={
+                  user.image
+                    ? user.googleId
+                      ? user.image
+                      : IMAGE_URL + user.image
+                    : UserProfile
+                }
                 className="w-20 h-20 rounded-full cursor-pointer"
                 alt=""
               />
               <div className="flex flex-col items-start justify-center gap-2">
                 <span className="text-[20px] font-bold cursor-pointer">
-                  John Doe
+                  {user.name}
                 </span>
                 <span className="px-5 py-2 hover:bg-green-500 bg-green-300 text-black cursor-pointer">
-                  300$
+                  {currencyFormatter(user.balance)}
                 </span>
               </div>
             </div>
@@ -401,16 +432,27 @@ export default function Dashboard() {
             </div>
           </div>
           <div className="flex items-center gap-5 mt-3">
-            <span className="text-gray-400">ID: 123456789</span>
-            <span className="text-gray-400">Email: john.doe@example.com</span>
+            <span className="text-gray-400">ID: {user._id}</span>
+            <span className="text-gray-400">Email: {user.email}</span>
           </div>
 
           <ul className="flex items-center gap-5 font-semibold mt-5">
-            <li className="cursor-pointer border-b-2 border-gray-200">Hisob</li>
-            <li className="cursor-pointer border-b-2 border-gray-200">
+            <li
+              className="cursor-pointer border-b-2 border-gray-200"
+              onClick={() => setRoute("Hisob")}
+            >
+              Hisob
+            </li>
+            <li
+              className="cursor-pointer border-b-2 border-gray-200"
+              onClick={() => setRoute("Saqlanganlar")}
+            >
               Saqlanganlar
             </li>
-            <li className="cursor-pointer border-b-2 border-gray-200">
+            <li
+              className="cursor-pointer border-b-2 border-gray-200"
+              onClick={() => setRoute("Haqida")}
+            >
               Haqida
             </li>
           </ul>
@@ -419,7 +461,9 @@ export default function Dashboard() {
 
       <div className="w-screen min-h-screen flex items-start justify-center bg-[#141414]">
         <div className="w-[1200px] h-max rounded-2xl shadow-lg p-5 mt-[130px]">
-          <DashboardContent />
+          {route === "Hisob" && <DashboardContent user={user} />}
+          {route === "Saqlanganlar" && <SavedItems />}
+          {route === "Haqida" && <About />}
         </div>
       </div>
       <Footer />
@@ -427,7 +471,25 @@ export default function Dashboard() {
   );
 }
 
-function DashboardContent() {
+function DashboardContent({ user }: { user: IUser }) {
+  const [balance, setBalance] = useState<number>(0);
+  const handleSetBalance = async () => {
+    try {
+      const res = await axios.put(
+        "http://localhost:5000/api/user/balance/" + user._id,
+        { balance: balance }
+      );
+
+      console.log(res.data);
+
+      if (res.data.balance === balance) {
+        window.location.reload();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <h1 className="text-white text-2xl border-b-2 border-[#1e1f28] w-full">
@@ -436,7 +498,8 @@ function DashboardContent() {
 
       <div className="mt-5">
         <div className="text-white">
-          Sizning mablag'ingiz: <span className="font-bold">300$</span>
+          Sizning mablag'ingiz:{" "}
+          <span className="font-bold">{currencyFormatter(user.balance)}</span>
         </div>
         <div>
           <p className="text-gray-400 mt-2">
@@ -450,6 +513,9 @@ function DashboardContent() {
             type="number"
             className="flex-1/3 bg-[#1e1f28] text-white px-3 py-2 rounded"
             placeholder="qancha"
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              setBalance(parseInt(e.target.value));
+            }}
           />
           <select
             name=""
@@ -459,7 +525,10 @@ function DashboardContent() {
             <option value="Humo">Humo</option>
             <option value="Uzcard">Uzcard</option>
           </select>
-          <button className="bg-indigo-300 cursor-pointer text-black font-bold px-4 py-2 rounded flex-1/3">
+          <button
+            className="bg-indigo-300 cursor-pointer text-black font-bold px-4 py-2 rounded flex-1/3"
+            onClick={handleSetBalance}
+          >
             To'dirish
           </button>
         </div>
@@ -587,17 +656,4 @@ function About() {
       </div>
     </>
   );
-}
-
-export function DashboardContentWrapper({ activeTab }: { activeTab: string }) {
-  switch (activeTab) {
-    case "account":
-      return <DashboardContent />;
-    case "saved":
-      return <SavedItems />;
-    case "about":
-      return <About />;
-    default:
-      return <DashboardContent />;
-  }
 }

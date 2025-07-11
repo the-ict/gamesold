@@ -21,9 +21,7 @@ import type { IGameAccount } from "@/types/GameAccount";
 import { currencyFormatter } from "@/components/Trending";
 import type { IUser } from "@/types/User";
 import ReactPlayer from "react-player";
-import type { IConversation } from "@/types/Conversations";
 
-// Render a YouTube video player
 
 const IMAGE_URL = import.meta.env.VITE_PC;
 
@@ -280,7 +278,7 @@ export default function SingleAccount() {
                 </div>
                 <div className="flex items-center gap-5">
                   {user.savedAccounts &&
-                  user.savedAccounts.includes(accountInfo._id) ? (
+                  user.savedAccounts.includes(String(accountInfo._id)) ? (
                     <GrFavorite
                       size={25}
                       className="cursor-pointer text-red-500"

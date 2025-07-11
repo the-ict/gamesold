@@ -65,4 +65,18 @@ router.post("/unsave", async (req, res, next) => {
         next(error);
     }
 });
+router.put("/balance/:userId", async (req, res, next) => {
+    try {
+        const { userId } = req.params;
+        const { balance } = req.body;
+        const userAccount = await UserAccount_1.default.findByIdAndUpdate(userId, { balance }, { new: true });
+        if (!userAccount) {
+            return res.status(404).send("User account not found");
+        }
+        res.status(200).json(userAccount);
+    }
+    catch (error) {
+        next(error);
+    }
+});
 module.exports = router;
