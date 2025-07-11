@@ -16,24 +16,25 @@ router.get(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { name, platform, mixPrice, maxPrice } = req.query;
-      const { Op } = require("sequelize");
 
-      const where: any = {};
+      const query: any = {};
       if (name) {
-        where.name = { [Op.like]: `%${name}%` };
+        query.name = { $regex: name, $options: "i" };
       }
       if (platform) {
-        where.platform = { [Op.like]: `%${platform}%` };
+        query.platform = { $regex: platform, $options: "i" };
       }
       if (mixPrice && !isNaN(Number(mixPrice))) {
-        where.price = { [Op.gte]: Number(mixPrice) };
+        query.price = { $gte: Number(mixPrice) };
       }
 
       if (maxPrice && !isNaN(Number(maxPrice))) {
-        where.price = { ...where.price, [Op.lte]: Number(maxPrice) };
+        query.price = { ...query.price, $lte: Number(maxPrice) };
       }
 
-      const gameAccounts = await GameAccount.find({ where });
+      const gameAccounts = await GameAccount.find(query);
+
+      console.log(gameAccounts, "gameAccounts that got");
 
       res.json(gameAccounts);
     } catch (error) {
@@ -103,6 +104,17 @@ router.get("/search/most-expensive", async (req: Request, res: Response) => {
       .sort({ price: -1 })
       .limit(8);
     res.json(mostExpensive);
+  } catch (error) {
+    res.status(404).send("No accounts found");
+  }
+});
+
+router.get("/author/:authorId", async (req: Request, res: Response) => {
+  try {
+    const gameAccounts = await GameAccount.find({
+      author: req.params.authorId,
+    });
+    res.json(gameAccounts);
   } catch (error) {
     res.status(404).send("No accounts found");
   }

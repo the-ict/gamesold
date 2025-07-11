@@ -7,6 +7,16 @@ import type { IGameAccount } from "@/types/GameAccount";
 import Skeleton from "@mui/material/Skeleton";
 import Box from "@mui/material/Box";
 
+export const currencyFormatter = (price: number) => {
+  return new Intl.NumberFormat("uz-UZ", {
+    style: "currency",
+    currency: "UZS",
+    minimumFractionDigits: 0,
+  }).format(price);
+};
+
+const IMAGE_URL = import.meta.env.VITE_PC;
+
 export default function Trending() {
   const [gameAccounts, setGameAccounts] = useState<IGameAccount[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -36,14 +46,6 @@ export default function Trending() {
     console.log(gameAccounts, "o'yin accountlar!");
   }, [gameAccounts]);
 
-  const currencyFormatter = (price: number) => {
-    return new Intl.NumberFormat("uz-UZ", {
-      style: "currency",
-      currency: "UZS",
-      minimumFractionDigits: 0,
-    }).format(price);
-  };
-
   return (
     <div className="flex items-center bg-[#212224] justify-center pt-15 text-white py-20">
       <div className="w-[1200px]">
@@ -63,17 +65,20 @@ export default function Trending() {
           ) : (
             gameAccounts.map((gameAccount) => (
               <div
-                className="w-[270px] relative h-[400px]"
+                className="w-[270px] relative h-[400px] p-1 border-2 rounded cursor-pointer"
                 key={String(gameAccount._id)}
+                onClick={() => {
+                  window.location.replace("/account/" + gameAccount._id);
+                }}
               >
                 <img
                   className="w-full h-full object-contain cursor-pointer hover:blur-[5px] transition-all duration-300 ease-in-out"
-                  src="https://www.g2g.com/img/affiliate-home.webp"
+                  src={IMAGE_URL + gameAccount.image}
                   alt=""
                 />
                 <div className="absolute bottom-0 left-0 right-0 text-center w-full bg-gray-200 text-black py-3 flex items-center justify-between px-3">
                   <p className="font-bold py-3 px-4 bg-red-400 rounded cursor-pointer hover:bg-red-500 transition">
-                    {gameAccount.price} UZS
+                    {currencyFormatter(gameAccount.price)}
                   </p>
                   <img
                     src={pubgGameIcon}

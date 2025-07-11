@@ -2,7 +2,6 @@ import express, { Request, Response } from "express";
 const session = require("express-session");
 const passport = require("passport");
 import { createServer } from "http";
-import { Server } from "socket.io";
 import mongoose from "mongoose";
 import multer from "multer";
 import dotenv from "dotenv";
@@ -35,6 +34,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.urlencoded({ extended: true })); // ✅ MUHIM
+app.use("/upload", express.static(path.join(__dirname, "upload")));
 
 // the configuration of multer
 const uploadPathName = path.join(__dirname, "upload");
@@ -123,46 +123,6 @@ app.use("/api/game", gameAccountRoutes);
 app.use("/api/user", userAccountRoutes);
 app.use("/api/message", messageRoutes);
 app.use("/api/auth", authRoutes);
-
-// socket.io setup
-const httpServer = createServer(app);
-const socketIo = new Server(httpServer, {
-  cors: {
-    origin: "http://localhost:5173",
-    methods: ["GET", "POST"],
-    credentials: true,
-  },
-});
-
-socketIo.on("connection", (socket) => {
-  console.log("Client connected");
-
-  socket.on("message", (message) => {
-    console.log(`Received message from client: ${message}`);
-    socketIo.emit("message", `Server response: ${message}`);
-  });
-
-  socket.on("disconnect", () => {
-    console.log("Client disconnected");
-  });
-});
-
-socketIo.on("send_message", async (data) => {
-  console.log("Message received:", data);
-
-  const { sender, receiver, content } = data;
-  const message = new Message({
-    sender,
-    receiver,
-    content,
-  });
-
-  await message.save();
-
-  console.log("Message saved to database:", message);
-
-  socketIo.emit("receive_message", message);
-});
 
 // app.get('/logout', (req: Request, res: Response) => {
 //   req.logout(() => {

@@ -6,8 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const session = require("express-session");
 const passport = require("passport");
-const http_1 = require("http");
-const socket_io_1 = require("socket.io");
 const mongoose_1 = __importDefault(require("mongoose"));
 const multer_1 = __importDefault(require("multer"));
 const dotenv_1 = __importDefault(require("dotenv"));
@@ -30,6 +28,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express_1.default.urlencoded({ extended: true })); // ✅ MUHIM
+app.use("/upload", express_1.default.static(path_1.default.join(__dirname, "upload")));
 // the configuration of multer
 const uploadPathName = path_1.default.join(__dirname, "upload");
 console.log(uploadPathName);
@@ -106,37 +105,6 @@ app.use("/api/game", gameAccountRoutes);
 app.use("/api/user", userAccountRoutes);
 app.use("/api/message", messageRoutes);
 app.use("/api/auth", authRoutes);
-// socket.io setup
-const httpServer = (0, http_1.createServer)(app);
-const socketIo = new socket_io_1.Server(httpServer, {
-    cors: {
-        origin: "http://localhost:5173",
-        methods: ["GET", "POST"],
-        credentials: true,
-    },
-});
-socketIo.on("connection", (socket) => {
-    console.log("Client connected");
-    socket.on("message", (message) => {
-        console.log(`Received message from client: ${message}`);
-        socketIo.emit("message", `Server response: ${message}`);
-    });
-    socket.on("disconnect", () => {
-        console.log("Client disconnected");
-    });
-});
-socketIo.on("send_message", async (data) => {
-    console.log("Message received:", data);
-    const { sender, receiver, content } = data;
-    const message = new Message({
-        sender,
-        receiver,
-        content,
-    });
-    await message.save();
-    console.log("Message saved to database:", message);
-    socketIo.emit("receive_message", message);
-});
 // app.get('/logout', (req: Request, res: Response) => {
 //   req.logout(() => {
 //     res.sendStatus(200);

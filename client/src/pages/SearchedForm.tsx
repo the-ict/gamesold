@@ -2,14 +2,38 @@ import { FaArrowDown } from "react-icons/fa";
 import Navbar from "../components/Navbar";
 import Footer from "@/components/Footer";
 import { Link, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import type { IGameAccount } from "@/types/GameAccount";
+import { currencyFormatter } from "@/components/Trending";
+
+const IMAGE_URL = import.meta.env.VITE_PC;
 
 export default function SearchedForm() {
+  const [fetchAccounts, setFetchAccounts] = useState<IGameAccount[]>([]);
   const location = useLocation();
 
   useEffect(() => {
-    console.log(location);
+    console.log(location.search);
+
+    const fetchSearch = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/api/game/search${location.search}`
+        );
+        console.log(response.data);
+
+        if (response.data) {
+          setFetchAccounts(response.data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchSearch();
   }, [location]);
+
   return (
     <>
       <Navbar />
@@ -101,26 +125,23 @@ export default function SearchedForm() {
               </button>
             </div>
             <div className="flex items-center w-[70%] gap-10 flex-wrap mt-5">
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((gameAccount) => (
-                <Link to={`/account/${gameAccount}`}>
-                  <div
-                    key={gameAccount}
-                    className="w-[250px] relative group h-[400px]"
-                  >
+              {fetchAccounts.map((gameAccount) => (
+                <Link to={`/account/${gameAccount._id}`} key={gameAccount._id}>
+                  <div className="w-[250px] relative group h-[400px]">
                     <p className="absolute bottom-0 left-0 right-0 top-0 h-max z-10 group-hover:hidden text-center w-full bg-black text-white py-3">
-                      Game
+                      {gameAccount.game}
                     </p>
                     <img
                       className="w-full h-full object-contain blur-[5px] hover:blur-none cursor-pointer  transition-all duration-300 ease-in-out"
-                      src="https://www.g2g.com/img/affiliate-home.webp"
+                      src={IMAGE_URL + gameAccount.image}
                       alt=""
                     />
                     <div className="absolute bottom-0 left-0 font-bold right-0 h-max z-10 text-center w-full bg-gray-200 text-black py-3">
                       <p className="text-sm w-full bg-red-500 text-white py-1">
-                        Narxi: 100$
+                        Narxi: {currencyFormatter(gameAccount.price)}
                       </p>
                       <p className="text-sm w-full bg-gray-500 text-white py-1 mt-3">
-                        Yashash joyi: Toshkent
+                        Manzili: {gameAccount.region}
                       </p>
                     </div>
                   </div>
