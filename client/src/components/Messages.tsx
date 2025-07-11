@@ -9,7 +9,7 @@ import type { IUser } from "@/types/User";
 import ConversationItem from "./ConversationItem";
 import type { IMessage } from "@/types/Messages";
 import MessagesItem from "./MessagesItem";
-import { format } from "timeago.js";
+import { io } from "socket.io-client";
 
 type Props = {};
 
@@ -17,13 +17,37 @@ export default function Messages({}: Props) {
   const [messages, setMessages] = React.useState<string>("");
   const [showEmojiPicker, setShowEmojiPicker] = React.useState<boolean>(false);
   const [conversations, setConversations] = React.useState<IConversation[]>([]);
+  const [arrivalMessage, setArrivalMessage] = useState<null | any>(null);
   const [currentConversation, setCurrentConversation] =
     React.useState<IConversation>({} as IConversation);
   const [chatMessages, setChatMessages] = React.useState<IMessage[]>([]);
 
   const messageRef = useRef<HTMLDivElement | null>(null);
+  const socket = useRef<ReturnType<typeof io> | null>(null);
 
   const { userId } = store();
+
+  useEffect(() => {
+    socket.current = io("ws://localhost:8900");
+
+    socket.current.on("getMessage", (data) => {
+      setArrivalMessage({
+        sender: data.userId,
+        text: data.text,
+      });
+    });
+  }, []);
+
+  useEffect(() => {
+    // If a new message arrives and the sender is one of the members of the current conversation,
+    // add the new message to the chat messages list
+    if (
+      arrivalMessage &&
+      currentConversation?.members.includes(arrivalMessage.sender)
+    ) {
+      setChatMessages((prev) => [...prev, arrivalMessage]);
+    }
+  }, [arrivalMessage, currentConversation]);
 
   useEffect(() => {
     const getCurrentConversation = async (conversationId: string) => {
@@ -99,6 +123,18 @@ export default function Messages({}: Props) {
         text: messages,
         conversationId: currentConversation._id,
       };
+
+      const receiverId = currentConversation.members.find(
+        (member) => member !== userId
+      );
+
+      if (socket.current) {
+        socket.current.emit("sendMessage", {
+          userId,
+          receiverId,
+          text: messages,
+        });
+      }
 
       const res = await axios.post(
         "http://localhost:5000/api/message",
