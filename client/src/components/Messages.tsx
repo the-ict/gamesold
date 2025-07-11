@@ -21,9 +21,34 @@ export default function Messages({}: Props) {
     React.useState<IConversation>({} as IConversation);
   const [chatMessages, setChatMessages] = React.useState<IMessage[]>([]);
 
-  const messageRef = useRef(null);
+  const messageRef = useRef<HTMLDivElement | null>(null);
 
   const { userId } = store();
+
+  useEffect(() => {
+    const getCurrentConversation = async (conversationId: string) => {
+      try {
+        const res = await axios.get(
+          "http://localhost:5000/api/conversation/conversation/" +
+            conversationId
+        );
+
+        console.log(
+          res.data,
+          "current Conversation that we got from our search"
+        );
+
+        setCurrentConversation(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    if (location.search.includes("conversationId")) {
+      console.log("conversationId", location.search.split("=")[1]);
+      getCurrentConversation(String(location.search.split("=")[1]));
+    }
+  }, [location]);
 
   useEffect(() => {
     const getConversation = async () => {
@@ -64,7 +89,7 @@ export default function Messages({}: Props) {
   }, [currentConversation]);
 
   useEffect(() => {
-    messageRef.current?.scrollIntoView({ behaviror: "smooth" });
+    messageRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chatMessages]);
 
   const handleSubmit = async () => {

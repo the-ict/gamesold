@@ -35,4 +35,40 @@ router.get("/:id", async (req, res) => {
         res.status(500).json({ error: "Failed to get conversation" });
     }
 });
+// get a conversation by its own _id
+router.get("/conversation/:conversationId", async (req, res) => {
+    try {
+        const conversation = await Conversation_1.default.findById(req.params.conversationId);
+        if (conversation) {
+            res.json(conversation);
+        }
+        else {
+            res.status(404).send("Conversation not found");
+        }
+    }
+    catch (error) {
+        res.status(500).json({ error: "Failed to get conversation" });
+    }
+});
+// check if conversation between two users exist
+router.get("/:userId1/:userId2", async (req, res) => {
+    try {
+        const conversation = await Conversation_1.default.findOne({
+            members: {
+                $all: [req.params.userId1, req.params.userId2],
+            },
+        });
+        if (conversation) {
+            res.status(200).json(conversation);
+        }
+        else {
+            res.status(200).json({
+                exist: false,
+            });
+        }
+    }
+    catch (error) {
+        res.status(500).json({ error: "Failed to check conversation" });
+    }
+});
 module.exports = router;

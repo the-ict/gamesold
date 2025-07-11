@@ -31,7 +31,7 @@ export default function SearchForm({
             }
 
             if (e.key == "Enter") {
-              window.location.replace(`/search?search=${searchInput}`);
+              window.location.replace(`/search?name=${searchInput}`);
             }
           }}
         />
