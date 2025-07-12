@@ -1,5 +1,4 @@
 import type { IMessage } from "@/types/Messages";
-import React from "react";
 
 interface MessageItemProps {
   message: IMessage;
@@ -8,7 +7,9 @@ interface MessageItemProps {
 
 export default function MessageItem({ message, own }: MessageItemProps) {
   return (
-    <div className="bg-blue-500 text-white p-3 rounded-lg self-end max-w-[70%]">
+    <div
+      className={`bg-blue-500 text-white p-3 rounded-lg max-w-full break-words whitespace-pre-wrap`}
+    >
       <p>{message.text}</p>
     </div>
   );
