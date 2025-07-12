@@ -1,6 +1,6 @@
 import BackgroundImage from "../assets/user-page-banner.svg";
 import UserProfile from "../assets/profile-avatar.svg";
-import { BiAddToQueue, BiEdit } from "react-icons/bi";
+import { BiAddToQueue, BiCamera, BiEdit } from "react-icons/bi";
 import { SlSettings } from "react-icons/sl";
 import Navbar from "@/components/Navbar";
 import React, { useEffect, useState, type ChangeEvent } from "react";
@@ -15,8 +15,15 @@ import type { IGameAccount } from "@/types/GameAccount";
 import Description from "@/components/Description";
 import type { IUser } from "@/types/User";
 import { currencyFormatter } from "@/components/Trending";
+import { Link } from "react-router-dom";
 
 const IMAGE_URL = import.meta.env.VITE_PC;
+
+interface IEditingAccount {
+  name: string;
+  password: string;
+  image: string;
+}
 
 export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = React.useState<boolean>(false);
@@ -29,6 +36,13 @@ export default function Dashboard() {
   const [imageFile, setImageFile] = React.useState<File[]>([]);
   const [videoFile, setVideoFile] = React.useState<File[]>([]);
   const [user, setUser] = useState<IUser>({} as any);
+  const [editingAccount, setEditingAccount] = React.useState({
+    name: "",
+    password: "",
+    image: "",
+    confirmPassword: "",
+    oldPassword: "",
+  });
 
   const { userId, setUserId } = useStore();
 
@@ -49,6 +63,13 @@ export default function Dashboard() {
   const handleChangeNewAccount = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setAccountInformation((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleChangeEditingAccount = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const { name, value } = e.target;
+    setEditingAccount((prev) => ({ ...prev, [name]: value }));
   };
 
   useEffect(() => {
@@ -158,11 +179,36 @@ export default function Dashboard() {
       alert("Yuklashda xatolik mavjud, keyinroq urinib kor'ing!");
     }
   };
+
+  const handleEdit = async () => {
+    if (editingAccount.oldPassword !== user.password)
+      return alert("Parol xato kiritildi");
+
+    if (editingAccount.password !== editingAccount.confirmPassword)
+      return alert("Parollar bir xil emas");
+
+    if (editingAccount.password === "") return alert("Parolni kiriting");
+
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/api/user/${user._id}`,
+        {
+          password: editingAccount.password,
+          name: editingAccount.name,
+          image: editingAccount.image ? editingAccount.image : user.image,
+        }
+      );
+
+      console.log(response.data, "editing account response");
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <React.Fragment>
       <Navbar />
 
-      {sidebarOpen && (
+      {sidebarOpen && !user.googleId && (
         <SidebarDrawer
           openAnimation={true}
           closeAnimation={!sidebarOpen}
@@ -172,34 +218,79 @@ export default function Dashboard() {
           sidebarSide="left-0"
           sidebarBackgroundColor="bg-[#212224]"
         >
-          <div className="flex flex-col items-start justify-center gap-5 mt-[50%] text-white">
+          <div className="flex flex-col items-center justify-center gap-5 mt-[50%] text-white">
+            <label
+              htmlFor="profilepicture"
+              className="group w-[100px] relative h-[100px] border-2 flex items-center justify-center rounded-full"
+            >
+              {user.image.includes("google") ? (
+                <img
+                  src={user.image}
+                  alt="hallo"
+                  className="w-[100%] h-[100%] rounded-full cursor-pointer"
+                />
+              ) : (
+                <img
+                  src={IMAGE_URL + user.image}
+                  alt="user image"
+                  className="w-[100%] h-[100%] rounded-full cursor-pointer"
+                />
+              )}
+
+              <div className="absolute w-[100%] h-[100%] rounded-full flex items-center justify-center bg-black opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <BiCamera className="text-2xl text-white cursor-pointer" />
+              </div>
+            </label>
+
+            <input
+              type="file"
+              id="profilepicture"
+              style={{ display: "none" }}
+              accept="image/*"
+              name="image"
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                const file = e.target.files?.[0].name;
+                if (file) {
+                  setEditingAccount((prev) => ({
+                    ...prev,
+                    image: file,
+                  }));
+                }
+              }}
+            />
             <input
               type="text"
-              placeholder="Tahallusingiz"
+              name="name"
+              placeholder={user.name}
+              onChange={(e) => handleChangeEditingAccount(e)}
               className="px-5 py-3 border-2 w-[100%]"
               autoFocus
             />
             <input
-              type="text"
-              placeholder="Emailingiz"
+              type="password"
+              name="oldPassword"
+              onChange={(e) => handleChangeEditingAccount(e)}
+              placeholder="Esi parolingiz"
               className="px-5 py-3 border-2 w-[100%]"
             />
             <input
               type="text"
-              placeholder="Eski parolingiz"
-              className="px-5 py-3 border-2 w-[100%]"
-            />
-            <input
-              type="text"
+              name="password"
+              onChange={(e) => handleChangeEditingAccount(e)}
               placeholder="Yangi parolingiz"
               className="px-5 py-3 border-2 w-[100%]"
             />
             <input
               type="text"
+              name="confirmPassword"
+              onChange={(e) => handleChangeEditingAccount(e)}
               placeholder="Yangi parolni takrorlang"
               className="px-5 py-3 border-2 w-[100%]"
             />
-            <button className="bg-blue-500 w-full cursor-pointer text-white px-4 py-2 rounded">
+            <button
+              onClick={handleEdit}
+              className="bg-blue-500 w-full cursor-pointer text-white px-4 py-2 rounded"
+            >
               O'zgartirish
             </button>
           </div>
@@ -239,11 +330,13 @@ export default function Dashboard() {
             </div>
 
             <div className="flex items-center gap-5">
-              <SlSettings
-                onClick={() => setSidebarOpen(true)}
-                className="text-gray-400 cursor-pointer hover:text-white transition-colors duration-300"
-                size={30}
-              />
+              {!user.googleId && (
+                <SlSettings
+                  onClick={() => setSidebarOpen(true)}
+                  className="text-gray-400 cursor-pointer hover:text-white transition-colors duration-300"
+                  size={30}
+                />
+              )}
 
               <CgAdd
                 className="text-gray-400 cursor-pointer hover:text-white transition-colors duration-300"
@@ -382,6 +475,8 @@ export default function Dashboard() {
                             alt="video downloaded"
                             className="w-full h-full object-contain rounded-[10px] cursor-pointer"
                           />
+                        ) : loader ? (
+                          <div className="loader"></div>
                         ) : (
                           <BiAddToQueue className="w-full h-[50px] object-contain rounded-[10px] cursor-pointer" />
                         )}
@@ -391,7 +486,12 @@ export default function Dashboard() {
                         type="file"
                         onChange={(e) => {
                           if (e.target.files) {
-                            setVideoFile([e.target.files[0]]);
+                            setLoader(true);
+                            setTimeout(() => {
+                              const file = e.target.files?.[0];
+                              setVideoFile([file as File]);
+                              setLoader(false);
+                            }, 1000); // Simulate loading time
                           }
                         }}
                         style={{ display: "none" }}
@@ -449,12 +549,6 @@ export default function Dashboard() {
             >
               Saqlanganlar
             </li>
-            <li
-              className="cursor-pointer border-b-2 border-gray-200"
-              onClick={() => setRoute("Haqida")}
-            >
-              Haqida
-            </li>
           </ul>
         </div>
       </div>
@@ -462,8 +556,7 @@ export default function Dashboard() {
       <div className="w-screen min-h-screen flex items-start justify-center bg-[#141414]">
         <div className="w-[1200px] h-max rounded-2xl shadow-lg p-5 mt-[130px]">
           {route === "Hisob" && <DashboardContent user={user} />}
-          {route === "Saqlanganlar" && <SavedItems />}
-          {route === "Haqida" && <About />}
+          {route === "Saqlanganlar" && <SavedItems user={user} />}
         </div>
       </div>
       <Footer />
@@ -543,116 +636,51 @@ function DashboardContent({ user }: { user: IUser }) {
   );
 }
 
-function SavedItems() {
+function SavedItems({ user }: { user: IUser }) {
+  const [savedItems, setSavedItems] = useState<IGameAccount[]>([]);
+
+  useEffect(() => {
+    const getSavedAccounts = async () => {
+      try {
+        const responses = await Promise.all(
+          user.savedAccounts.map((accountId: string) =>
+            axios.get("http://localhost:5000/api/game/" + accountId)
+          )
+        );
+
+        const accounts = responses.map((res) => res.data);
+        setSavedItems(accounts);
+      } catch (error) {
+        console.error("Error fetching saved accounts:", error);
+      }
+    };
+
+    if (user?.savedAccounts?.length > 0) {
+      getSavedAccounts();
+    }
+  }, [user.savedAccounts]);
+
   return (
     <>
       <h1 className="text-white text-2xl border-b-2 border-[#1e1f28] w-full">
         Saqlangan accountlar
       </h1>
       <div className="mt-5 flex items-center gap-5 flex-wrap">
-        <div className="w-[270px] relative border">
-          <img
-            className="w-full h-full object-contain cursor-pointer hover:blur-[5px] transition-all duration-300 ease-in-out"
-            src="https://www.g2g.com/img/affiliate-home.webp"
-            alt=""
-          />
-          <p className="absolute bottom-0 left-0 right-0 text-center w-full bg-gray-200 text-black py-3">
-            narxi: 100$
-          </p>
-        </div>
-        <div className="w-[270px] relative border">
-          <img
-            className="w-full h-full object-contain cursor-pointer hover:blur-[5px] transition-all duration-300 ease-in-out"
-            src="https://www.g2g.com/img/affiliate-home.webp"
-            alt=""
-          />
-          <p className="absolute bottom-0 left-0 right-0 text-center w-full bg-gray-200 text-black py-3">
-            narxi: 100$
-          </p>
-        </div>
-        <div className="w-[270px] relative border">
-          <img
-            className="w-full h-full object-contain cursor-pointer hover:blur-[5px] transition-all duration-300 ease-in-out"
-            src="https://www.g2g.com/img/affiliate-home.webp"
-            alt=""
-          />
-          <p className="absolute bottom-0 left-0 right-0 text-center w-full bg-gray-200 text-black py-3">
-            narxi: 100$
-          </p>
-        </div>
-        <div className="w-[270px] relative border">
-          <img
-            className="w-full h-full object-contain cursor-pointer hover:blur-[5px] transition-all duration-300 ease-in-out"
-            src="https://www.g2g.com/img/affiliate-home.webp"
-            alt=""
-          />
-          <p className="absolute bottom-0 left-0 right-0 text-center w-full bg-gray-200 text-black py-3">
-            narxi: 100$
-          </p>
-        </div>
-
-        <div className="w-[270px] relative border">
-          <img
-            className="w-full h-full object-contain cursor-pointer hover:blur-[5px] transition-all duration-300 ease-in-out"
-            src="https://www.g2g.com/img/affiliate-home.webp"
-            alt=""
-          />
-          <p className="absolute bottom-0 left-0 right-0 text-center w-full bg-gray-200 text-black py-3">
-            narxi: 100$
-          </p>
-        </div>
-        <div className="w-[270px] relative border">
-          <img
-            className="w-full h-full object-contain cursor-pointer hover:blur-[5px] transition-all duration-300 ease-in-out"
-            src="https://www.g2g.com/img/affiliate-home.webp"
-            alt=""
-          />
-          <p className="absolute bottom-0 left-0 right-0 text-center w-full bg-gray-200 text-black py-3">
-            narxi: 100$
-          </p>
-        </div>
-        <div className="w-[270px] relative border">
-          <img
-            className="w-full h-full object-contain cursor-pointer hover:blur-[5px] transition-all duration-300 ease-in-out"
-            src="https://www.g2g.com/img/affiliate-home.webp"
-            alt=""
-          />
-          <p className="absolute bottom-0 left-0 right-0 text-center w-full bg-gray-200 text-black py-3">
-            narxi: 100$
-          </p>
-        </div>
-        <div className="w-[270px] relative border">
-          <img
-            className="w-full h-full object-contain cursor-pointer hover:blur-[5px] transition-all duration-300 ease-in-out"
-            src="https://www.g2g.com/img/affiliate-home.webp"
-            alt=""
-          />
-          <p className="absolute bottom-0 left-0 right-0 text-center w-full bg-gray-200 text-black py-3">
-            narxi: 100$
-          </p>
-        </div>
-      </div>
-    </>
-  );
-}
-
-function About() {
-  return (
-    <>
-      <h1 className="text-white text-2xl border-b-2 border-[#1e1f28] w-full">
-        Haqida
-      </h1>
-      <div className="mt-5 relative text-white w-[900px] p-5 bg-[#1e1f28] rounded-lg">
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Neque modi
-          quasi molestias provident reprehenderit laudantium possimus, dolores
-          id facere hic placeat vitae ducimus ut corporis consectetur adipisci
-          deleniti architecto ullam.
-        </p>
-        <BiEdit
-          className="absolute top-5 right-5 text-gray-400 cursor-pointer hover:text-white transition-colors duration-300"
-          size={30}
-        />
+        {savedItems.length > 0 &&
+          savedItems.map((item) => (
+            <Link to={`/account/${item._id}`} key={item._id}>
+              <div className="w-[270px] relative border h-[300px] p-2 rounded">
+                <img
+                  className="w-full h-full object-contain cursor-pointer hover:blur-[5px] transition-all duration-300 ease-in-out"
+                  src={IMAGE_URL + item.image}
+                  alt=""
+                />
+                <p className="absolute bottom-0 left-0 right-0 text-center w-full bg-gray-200 text-black py-3">
+                  {currencyFormatter(item.price)}
+                </p>
+              </div>
+            </Link>
+          ))}
       </div>
     </>
   );
