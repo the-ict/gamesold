@@ -69,7 +69,8 @@ router.put("/balance/:userId", async (req, res, next) => {
     try {
         const { userId } = req.params;
         const { balance } = req.body;
-        const userAccount = await UserAccount_1.default.findByIdAndUpdate(userId, { balance }, { new: true });
+        const user = await UserAccount_1.default.findById(userId);
+        const userAccount = await UserAccount_1.default.findByIdAndUpdate(userId, { balance: (user === null || user === void 0 ? void 0 : user.balance) + balance }, { new: true });
         if (!userAccount) {
             return res.status(404).send("User account not found");
         }
