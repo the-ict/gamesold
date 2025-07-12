@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const router = require("express").Router();
 const GameAccount_1 = __importDefault(require("../models/GameAccount"));
+const UserAccount_1 = __importDefault(require("../models/UserAccount"));
 router.get("/", async (req, res, next) => {
     try {
         const gameAccounts = await GameAccount_1.default.find();
@@ -55,6 +56,11 @@ router.get("/:id", async (req, res, next) => {
 router.post("/", async (req, res, next) => {
     try {
         const newGameAccount = await GameAccount_1.default.create(req.body);
+        const user = await UserAccount_1.default.findById(newGameAccount.author);
+        if (user === null || user === void 0 ? void 0 : user._id) {
+            user.accounts.push(String(newGameAccount._id));
+            await user.save();
+        }
         res.status(201).json(newGameAccount);
     }
     catch (error) {

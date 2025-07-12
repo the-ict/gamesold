@@ -1,5 +1,6 @@
 const router = require("express").Router();
 import GameAccount from "../models/GameAccount";
+import UserAccount from "../models/UserAccount";
 import { Request, Response, NextFunction } from "express";
 
 router.get("/", async (req: Request, res: Response, next: NextFunction) => {
@@ -59,6 +60,12 @@ router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
 router.post("/", async (req: Request, res: Response, next: NextFunction) => {
   try {
     const newGameAccount = await GameAccount.create(req.body);
+    const user = await UserAccount.findById(newGameAccount.author);
+    if (user?._id) {
+      user.accounts.push(String(newGameAccount._id));
+      await user.save();
+    }
+
     res.status(201).json(newGameAccount);
   } catch (error) {
     next(error);
