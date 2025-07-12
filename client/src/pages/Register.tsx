@@ -43,9 +43,11 @@ export default function Register() {
         user
       );
 
+      console.log(response.data);
+
       if (response.data) {
         setUserId(response.data._id);
-        window.location.replace("/dashboard")
+        window.location.replace("/dashboard");
       }
     } catch (error) {
       setError("Registratsiyadan o'tishda muammo chiqdi");
@@ -97,7 +99,9 @@ export default function Register() {
         <div className="flex justify-between items-center flex-col w-full gap-2">
           <button
             onClick={handleRegister}
-            className={`p-2 bg-red-400 rounded-[10px] cursor-pointer text-white w-full ${loading && "cursor-not-allowed" }`}
+            className={`p-2 bg-red-400 rounded-[10px] cursor-pointer text-white w-full ${
+              loading && "cursor-not-allowed"
+            }`}
           >
             {loading ? <span className="loader"></span> : "Register"}
           </button>
