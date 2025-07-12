@@ -156,7 +156,7 @@ export default function SingleAccount() {
 
       console.log(res.data, "conversation single data");
 
-      if (res.data) {
+      if (res.data.exist) {
         window.location.replace("/messages?conversationId=" + res.data._id);
       } else {
         const response = await axios.post(
@@ -167,6 +167,12 @@ export default function SingleAccount() {
         );
 
         console.log(response.data);
+
+        if (response.data) {
+          window.location.replace(
+            "/messages?conversationId=" + response.data._id
+          );
+        }
       }
     } catch (error) {
       alert(error);

@@ -11,6 +11,8 @@ import type { IMessage } from "@/types/Messages";
 import MessagesItem from "./MessagesItem";
 import { io } from "socket.io-client";
 
+const IMAGE_URL = import.meta.env.VITE_PC;
+
 type Props = {};
 
 export default function Messages({}: Props) {
@@ -21,6 +23,7 @@ export default function Messages({}: Props) {
   const [currentConversation, setCurrentConversation] =
     React.useState<IConversation>({} as IConversation);
   const [chatMessages, setChatMessages] = React.useState<IMessage[]>([]);
+  const [receiver, setReceiver] = React.useState<IUser>({} as IUser);
 
   const messageRef = useRef<HTMLDivElement | null>(null);
   const socket = useRef<ReturnType<typeof io> | null>(null);
@@ -41,6 +44,7 @@ export default function Messages({}: Props) {
   useEffect(() => {
     // If a new message arrives and the sender is one of the members of the current conversation,
     // add the new message to the chat messages list
+
     if (
       arrivalMessage &&
       currentConversation?.members.includes(arrivalMessage.sender)
@@ -110,6 +114,25 @@ export default function Messages({}: Props) {
     };
 
     getConversationMessages();
+
+    const getReceiver = async () => {
+      try {
+        const res = await axios.get(
+          "http://localhost:5000/api/user/" +
+            currentConversation.members.filter((id) => id !== userId)
+        );
+
+        console.log(res.data, "receiver data");
+
+        if (res.data) {
+          setReceiver(res.data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getReceiver();
   }, [currentConversation]);
 
   useEffect(() => {
@@ -180,11 +203,17 @@ export default function Messages({}: Props) {
           <div className="h-[10%] flex items-center justify-between p-5 border-b border-gray-600">
             <div className="flex items-center gap-4">
               <img
-                src={userAvatar}
+                src={
+                  receiver.name && receiver?.image.includes("google")
+                    ? receiver.image
+                    : receiver.image
+                    ? IMAGE_URL + receiver.image
+                    : userAvatar
+                }
                 alt="User default avatar"
                 className="w-[50px] h-[50px] object-cover cursor-pointer rounded-full"
               />
-              <span className="font-bold cursor-pointer">John Doe</span>
+              <span className="font-bold cursor-pointer">{receiver.name}</span>
             </div>
 
             <PiDotsNine className="text-2xl text-gray-400 cursor-pointer hover:text-white transition-colors" />

@@ -57,7 +57,7 @@ router.get("/:userId1/:userId2", async (req, res) => {
             members: {
                 $all: [req.params.userId1, req.params.userId2],
             },
-        });
+        }).sort({ members: 1 });
         if (conversation) {
             res.status(200).json(conversation);
         }
