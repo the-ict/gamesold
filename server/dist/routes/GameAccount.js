@@ -23,7 +23,7 @@ router.get("/search", async (req, res, next) => {
             query.name = { $regex: name, $options: "i" };
         }
         if (platform) {
-            query.platform = { $regex: platform, $options: "i" };
+            query.game = { $regex: platform, $options: "i" };
         }
         if (mixPrice && !isNaN(Number(mixPrice))) {
             query.price = { $gte: Number(mixPrice) };
@@ -115,6 +115,24 @@ router.get("/author/:authorId", async (req, res) => {
     }
     catch (error) {
         res.status(404).send("No accounts found");
+    }
+});
+router.post("/:id/buy", async (req, res) => {
+    try {
+        const { buyer } = req.body;
+        const gameAccount = await GameAccount_1.default.findById(req.params.id);
+        const user = await UserAccount_1.default.findById(buyer);
+        if ((gameAccount === null || gameAccount === void 0 ? void 0 : gameAccount._id) && (user === null || user === void 0 ? void 0 : user._id)) {
+            gameAccount.buyer = buyer;
+            gameAccount.status = "sold";
+            user.tranzactions.push(String(gameAccount._id));
+            await gameAccount.save();
+            await user.save();
+            res.json(gameAccount);
+        }
+    }
+    catch (error) {
+        res.status(500).json("500 internal server error");
     }
 });
 module.exports = router;

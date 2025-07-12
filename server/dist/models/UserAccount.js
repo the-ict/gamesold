@@ -42,7 +42,7 @@ exports.userSchema = new mongoose_1.Schema({
     image: { type: String, default: "" },
     balance: { type: Number, default: 0 },
     savedAccounts: { type: [String], default: [] },
-    tranzactions: { type: [Object], default: [] },
+    tranzactions: { type: [String], default: [] },
     accounts: { type: [String], default: [] },
     googleId: { type: String, unique: true, sparse: true, required: false },
     displayName: { type: String, default: "" },
