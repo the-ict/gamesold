@@ -225,11 +225,16 @@ export default function Messages({}: Props) {
 
           {currentConversation._id ? (
             <div className="h-[80%]">
-              <div className="flex flex-col gap-4 p-5 overflow-y-auto h-full no-scrollbar">
+              <div className="flex flex-col gap-4 p-5 overflow-y-auto h-full no-scrollbar w-full">
                 {/* Example messages */}
                 {Array.isArray(chatMessages) ? (
                   chatMessages.map((message) => (
-                    <div ref={messageRef}>
+                    <div
+                      ref={messageRef}
+                      className={`${
+                        message.sender === userId ? "self-end" : "self-start"
+                      } max-w-[60%]`}
+                    >
                       <MessagesItem
                         key={message._id}
                         message={message}
