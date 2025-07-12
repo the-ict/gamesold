@@ -479,10 +479,10 @@ function DashboardContent({ user }: { user: IUser }) {
         "http://localhost:5000/api/user/balance/" + user._id,
         { balance: balance }
       );
-
       console.log(res.data);
 
-      if (res.data.balance === balance) {
+      console.log(res.data);
+      if (res.data) {
         window.location.reload();
       }
     } catch (error) {

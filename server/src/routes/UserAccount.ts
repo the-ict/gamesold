@@ -79,9 +79,10 @@ router.put(
     try {
       const { userId } = req.params;
       const { balance } = req.body;
+      const user = await UserAccount.findById(userId);
       const userAccount = await UserAccount.findByIdAndUpdate(
         userId,
-        { balance },
+        { balance: user?.balance + balance },
         { new: true }
       );
 
