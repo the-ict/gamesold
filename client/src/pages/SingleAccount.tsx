@@ -22,7 +22,6 @@ import { currencyFormatter } from "@/components/Trending";
 import type { IUser } from "@/types/User";
 import ReactPlayer from "react-player";
 
-
 const IMAGE_URL = import.meta.env.VITE_PC;
 
 export default function SingleAccount() {
@@ -146,8 +145,6 @@ export default function SingleAccount() {
     }
   };
 
-  console.log(`${IMAGE_URL}${accountInfo.video}`);
-
   const openConversation = async () => {
     if (!user._id) return;
     if (!accountInfo.author) return;
@@ -182,9 +179,24 @@ export default function SingleAccount() {
 
       {showAreYouSure && (
         <AreYouSure
-          onConfirm={() => {
+          onConfirm={async () => {
             setShowAreYouSure(false);
             setSidebarOpen(false);
+
+            try {
+              const res = await axios.post(
+                `http://localhost:5000/api/game/${accountInfo._id}/buy`,
+                {
+                  buyer: user._id,
+                }
+              );
+
+              if (res.data) {
+                window.location.reload();
+              }
+            } catch (error) {
+              console.log(error);
+            }
           }}
           onCancel={() => setShowAreYouSure(false)}
           message="Siz sotib olishni xohlaysizmi?"
@@ -205,11 +217,17 @@ export default function SingleAccount() {
             <div className="flex items-center gap-5 mb-5 bg-[#13a13a] text-white p-5 rounded-[10px]">
               <img
                 className="w-[50px] h-[50px] object-cover rounded-full cursor-pointer"
-                src={UserAvatar}
+                src={
+                  user.image.includes("google")
+                    ? user.image
+                    : user.image
+                    ? `${IMAGE_URL}${user.image}`
+                    : UserAvatar
+                }
                 alt=""
               />
               <span>
-                Sizning hisobingiz: <b>400.000so'm</b>
+                Sizning hisobingiz: <b>{currencyFormatter(user.balance)}</b>
               </span>
             </div>
 
@@ -218,23 +236,23 @@ export default function SingleAccount() {
                 Akkunt ma'lumotlari
               </h1>
               <img
-                src={AccountImage}
+                src={IMAGE_URL + accountInfo.image}
                 className="rounded-lg cursor-pointer"
                 alt="account image"
               />
               <p>
                 <span>
-                  Akkunt raqami: <b>123456789</b>
+                  Akkunt raqami: <b>{accountInfo._id}</b>
                 </span>
               </p>
               <p>
                 <span>
-                  Akkunt platformasi: <b>Pubg mobile</b>
+                  Akkunt platformasi: <b>{accountInfo.game}</b>
                 </span>
               </p>
               <p>
                 <span>
-                  Akkount narxi: <b>200.000so'm</b>
+                  Akkount narxi: <b>{accountInfo.price}</b>
                 </span>
               </p>
             </div>
@@ -302,11 +320,18 @@ export default function SingleAccount() {
               <div className="flex items-center gap-2 mt-5">
                 <span
                   onClick={() => {
+                    if (accountInfo.status === "sold") return;
                     setSidebarOpen(true);
                   }}
-                  className="p-2 border bg-green-500 font-bold px-5 cursor-pointer text-white rounded-[10px]"
+                  className={`${
+                    accountInfo.status === "sold"
+                      ? "bg-red-500"
+                      : "bg-green-500"
+                  } p-2 border font-bold px-5 cursor-pointer text-white rounded-[10px]`}
                 >
-                  {currencyFormatter(accountInfo.price)}
+                  {accountInfo.status !== "sold"
+                    ? currencyFormatter(accountInfo.price)
+                    : "Sotildi"}
                 </span>
               </div>
               <div className="flex items-center gap-2 text-gray-400 mt-5">
@@ -321,7 +346,7 @@ export default function SingleAccount() {
             dangerouslySetInnerHTML={{ __html: accountInfo.description }}
           />
 
-          <h1 className="text-3xl font-bold mt-10 mb-10 min-h-[50vh]">
+          <h1 className="text-3xl font-bold mt-10 mb-10 min-h-[40vh]">
             {authorAccount.name}ning boshqa sotuv akkountlari{" "}
             {Array.isArray(authorAccount.accounts) &&
               authorAccount.accounts.length === 0 &&

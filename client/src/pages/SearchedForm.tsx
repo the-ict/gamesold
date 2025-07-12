@@ -11,6 +11,12 @@ const IMAGE_URL = import.meta.env.VITE_PC;
 
 export default function SearchedForm() {
   const [fetchAccounts, setFetchAccounts] = useState<IGameAccount[]>([]);
+  const [filters, setFilters] = useState({
+    minPrice: 0,
+    maxPrice: 0,
+    region: "Hammasi",
+    game: "PUBG",
+  });
   const location = useLocation();
 
   useEffect(() => {
@@ -34,13 +40,36 @@ export default function SearchedForm() {
     fetchSearch();
   }, [location]);
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFilters((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleFilter = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/api/game/search",
+        {
+          params: filters,
+        }
+      );
+
+      if (response.data) {
+        setFetchAccounts(response.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <Navbar />
       <div className="flex justify-center min-h-[120vh] pt-5 pb-5 bg-[#121212]">
         <div className="w-[1200px]">
           <h1 className="text-2xl text-white font-bold mt-[50px]">
-            Qidiruv natijalari: <span className="text-red-500">45223</span>
+            Qidiruv natijalari:{" "}
+            <span className="text-red-500">{fetchAccounts.length}</span>
           </h1>
           <div className="flex items-start justify-between w-ful gap-2">
             <div className="w-[30%] mt-5 p-5 bg-[#1e1f28] text-white rounded-[10px]">
@@ -53,12 +82,16 @@ export default function SearchedForm() {
                 <div className="flex w-full gap-2 items-center justify-between">
                   <input
                     type="number"
+                    name="minPrice"
+                    onChange={handleChange}
                     placeholder="Min"
                     className="p-2 border border-gray-300 rounded w-[45%]"
                   />
 
                   <input
                     type="number"
+                    name="maxPrice"
+                    onChange={handleChange}
                     placeholder="Max"
                     className="p-2 border border-gray-300 rounded w-[45%]"
                   />
@@ -76,6 +109,9 @@ export default function SearchedForm() {
                     name=""
                     className="p-2 border border-gray-300 rounded w-[100%] bg-gray-700 cursor-pointer"
                     id=""
+                    onChange={(e) =>
+                      setFilters({ ...filters, region: e.target.value })
+                    }
                   >
                     {[
                       "Hammasi",
@@ -112,15 +148,22 @@ export default function SearchedForm() {
                     name="hisob"
                     id="hisob"
                     className="p-2 border border-gray-300 rounded w-[100%] bg-gray-700 cursor-pointer"
+                    onChange={(e) =>
+                      setFilters({ ...filters, game: e.target.value })
+                    }
                   >
-                    <option value="pubgm">Pubg Mobile</option>
-                    <option value="ml">Mobile Legends</option>
-                    <option value="callofduty">Call of Duty</option>
+                    <option value="PUBG">Pubg Mobile</option>
+                    <option value="Fortnite">Fortnite</option>
+                    <option value="CSGO">CSGO</option>
+                    <option value="Call of Duty">Call of Duty</option>
                   </select>
                 </div>
               </div>
 
-              <button className="p-2 bg-red-400 rounded-[10px] cursor-pointer text-white w-[100%] mt-10">
+              <button
+                onClick={handleFilter}
+                className="p-2 bg-red-400 rounded-[10px] cursor-pointer text-white w-[100%] mt-10"
+              >
                 Qaytadan qidirish
               </button>
             </div>
