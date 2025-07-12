@@ -39,6 +39,8 @@ export default function Messages({}: Props) {
         text: data.text,
       });
     });
+
+    console.log("socketga ulandik");
   }, []);
 
   useEffect(() => {
@@ -95,6 +97,8 @@ export default function Messages({}: Props) {
     };
 
     getConversation();
+
+    socket.current?.emit("addUser", userId);
   }, [userId]);
 
   useEffect(() => {
@@ -152,7 +156,8 @@ export default function Messages({}: Props) {
       );
 
       if (socket.current) {
-        socket.current.emit("sendMessage", {
+        console.log("yuborilmoqda!!!!");
+        socket.current.emit("getMessage", {
           userId,
           receiverId,
           text: messages,
@@ -234,6 +239,7 @@ export default function Messages({}: Props) {
                       className={`${
                         message.sender === userId ? "self-end" : "self-start"
                       } max-w-[60%]`}
+                      key={message._id}
                     >
                       <MessagesItem
                         key={message._id}
