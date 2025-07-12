@@ -27,10 +27,12 @@ io.on("connection", (socket) => {
     });
     socket.on("disconnect", () => {
         removeUser(socket.id);
+        console.log("user removed");
         io.emit("getUsers", users);
     });
     socket.on("getMessage", ({ userId, receiverId, text }) => {
         const user = getUser(receiverId);
+        console.log("message given user: ", user);
         io.to(String(user === null || user === void 0 ? void 0 : user.socketId)).emit("getMessage", {
             userId,
             text,
