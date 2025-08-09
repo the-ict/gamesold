@@ -153,7 +153,7 @@ export default function Dashboard() {
           accountInformation.video = videoFile[0].name;
         } else {
           setLoader(false);
-          alert("Yuklashda xatolik mavjud");
+          alert("videoni yuklashda muammo mavjud!");
         }
       } else {
         alert("Videoni tanlang bu majburiy");

@@ -37,7 +37,7 @@ app.use(express.urlencoded({ extended: true })); // ✅ MUHIM
 app.use("/upload", express.static(path.join(__dirname, "upload")));
 
 // the configuration of multer
-const uploadPathName = path.join(__dirname, "upload");
+const uploadPathName = path.join(__dirname, "dist", "upload");
 console.log(uploadPathName);
 
 const storage = multer.diskStorage({
