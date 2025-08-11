@@ -16,7 +16,7 @@ export default function SearchForm({
         onClick={() => setSearchForm(false)}
       />
 
-      <div className="w-[1200px] flex items-center gap-2 p-2 border border-gray-300 h-[80px] rounded px-4 py-5 bg-white">
+      <div className="w-[1200px] flex items-center gap-2 p-2 border border-gray-300 h-[80px] rounded px-4 py-5 bg-gray-200">
         <input
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
             setSearchInput(e.target.value);

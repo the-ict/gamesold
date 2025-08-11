@@ -13,4 +13,5 @@ export interface IUser {
   lastName?: string;
   chats?: string[];
   _id: string;
+  profile_pic: string;
 }

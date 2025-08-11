@@ -1,13 +1,32 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import SearchForm from "./SearchForm";
 import useStore from "../store";
-import { IoNotificationsCircle } from "react-icons/io5";
 import { BsChat } from "react-icons/bs";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import type { IUser } from "@/types/User";
 
 export default function Navbar() {
+  const [user, setUser] = useState<IUser>({} as IUser)
+
   const { userId } = useStore();
+
+  useEffect(() => {
+    const getUserInformations = async () => {
+      try {
+        const res = await axios.get(
+          "http://localhost:5000/api/user/" + localStorage.getItem("userId")
+        );
+
+        setUser(res.data)
+      } catch (error) {
+        alert(error);
+      }
+    };
+
+    getUserInformations()
+  }, [])
 
   const [searchModelOpen, setSearchModelOpen] = useState(false);
   return (
@@ -32,15 +51,23 @@ export default function Navbar() {
 
         {userId ? (
           <div className="flex items-center gap-5">
-            <Link to={`/messages`}>
-              <BsChat className="w-[30px] h-[30px] cursor-pointer" />
-            </Link>
+            {
+              user.chats && user.chats.length > 0 && (
+                <Link to={`/messages`}>
+                  <BsChat className="w-[30px] h-[30px] cursor-pointer" />
+                </Link>
+              )
+            }
             <Link to={`/dashboard`}>
-              <img
-                src="https://i.pinimg.com/236x/2c/47/d5/2c47d5dd5b532f83bb55c4cd6f5bd1ef.jpg"
-                alt=""
-                className="w-[30px] h-[30px] cursor-pointer rounded-full object-cover"
-              />
+              {
+                user?.profile_pic && (
+                  user?.profile_pic.includes("google") ? (
+                    <img src={user.profile_pic} alt="Google profile image" className={"w-[35px] h-[35px] object-cover cursor-pointer rounded-full"} />
+                  ) : (
+                    <img src={"http://localhost:5000/" + user.image} className={"w-[35px] h-[35px] object-cover cursor-pointer rounded-full"} alt="" />
+                  )
+                )
+              }
             </Link>
           </div>
         ) : (
