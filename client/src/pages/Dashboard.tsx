@@ -1,6 +1,6 @@
 import BackgroundImage from "../assets/user-page-banner.svg";
 import UserProfile from "../assets/profile-avatar.svg";
-import { BiAddToQueue, BiCamera, BiEdit } from "react-icons/bi";
+import { BiAddToQueue, BiCamera } from "react-icons/bi";
 import { SlSettings } from "react-icons/sl";
 import Navbar from "@/components/Navbar";
 import React, { useEffect, useState, type ChangeEvent } from "react";
@@ -19,16 +19,9 @@ import { Link } from "react-router-dom";
 
 const IMAGE_URL = import.meta.env.VITE_PC;
 
-interface IEditingAccount {
-  name: string;
-  password: string;
-  image: string;
-}
-
 export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = React.useState<boolean>(false);
   const [newAccountOpen, setNewAccountOpen] = React.useState<boolean>(false);
-  const [openDescription, setOpenDescription] = React.useState<boolean>(false);
   const [route, setRoute] = useState<"Saqlanganlar" | "Hisob" | "Haqida">(
     "Hisob"
   );
