@@ -19,6 +19,8 @@ import { Link } from "react-router-dom";
 
 const IMAGE_URL = import.meta.env.VITE_PC;
 
+console.log("image url", IMAGE_URL)
+
 export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = React.useState<boolean>(false);
   const [newAccountOpen, setNewAccountOpen] = React.useState<boolean>(false);
@@ -103,74 +105,7 @@ export default function Dashboard() {
   }, []);
 
   const handleNewAccount = async () => {
-    if (accountInformation.name === "") return;
-    if (accountInformation.price === 0) return;
-    if (accountInformation.region === "") return;
-
-    console.log(accountInformation.description, "bu description");
-
-    if (accountInformation.description === "") return;
-
-    setLoader(true);
-
-    try {
-      if (imageFile.length != 0) {
-        const formData = new FormData();
-
-        formData.append("file", imageFile[0]);
-        const imageUploadResponse = await axios.post(
-          "http://localhost:5000/upload",
-          formData
-        );
-        if (imageUploadResponse.data) {
-          accountInformation.image = imageFile[0].name;
-        } else {
-          setLoader(false);
-          alert("Yuklashda xatolik mavjud");
-        }
-      } else {
-        alert("Rasmni tanlang bu majburiy");
-        setLoader(false);
-        return;
-      }
-
-      if (videoFile.length != 0) {
-        const formData = new FormData();
-
-        formData.append("file", videoFile[0]);
-        const videoUploadResponse = await axios.post(
-          "http://localhost:5000/upload",
-          formData
-        );
-        if (videoUploadResponse.data) {
-          accountInformation.video = videoFile[0].name;
-        } else {
-          setLoader(false);
-          alert("videoni yuklashda muammo mavjud!");
-        }
-      } else {
-        alert("Videoni tanlang bu majburiy");
-        setLoader(false);
-        return;
-      }
-
-      console.log(accountInformation);
-
-      const response = await axios.post(
-        "http://localhost:5000/api/game",
-        accountInformation
-      );
-
-      if (response.data) {
-        window.location.reload();
-      } else {
-        setLoader(false);
-        alert("Yuklashda xatolik mavjud, keyinroq urinib kor'ing!");
-      }
-    } catch (error) {
-      setLoader(false);
-      alert("Yuklashda xatolik mavjud, keyinroq urinib kor'ing!");
-    }
+    console.log("Hello world!")
   };
 
   const handleEdit = async () => {
@@ -218,7 +153,7 @@ export default function Dashboard() {
             >
               {user.image.includes("google") ? (
                 <img
-                  src={user.image}
+                  src={user.profile_pic}
                   alt="hallo"
                   className="w-[100%] h-[100%] rounded-full cursor-pointer"
                 />
@@ -303,14 +238,10 @@ export default function Dashboard() {
             <div className="flex items-center gap-5">
               <img
                 src={
-                  user.image
-                    ? user.googleId
-                      ? user.image
-                      : IMAGE_URL + user.image
-                    : UserProfile
+                  user.profile_pic ? user.profile_pic : user.image ? IMAGE_URL + user.image : UserProfile
                 }
                 className="w-20 h-20 rounded-full cursor-pointer"
-                alt=""
+                alt="What up nigga!"
               />
               <div className="flex flex-col items-start justify-center gap-2">
                 <span className="text-[20px] font-bold cursor-pointer">

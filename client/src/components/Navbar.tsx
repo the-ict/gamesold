@@ -14,6 +14,8 @@ export default function Navbar() {
 
   useEffect(() => {
     const getUserInformations = async () => {
+      if(!userId) return
+
       try {
         const res = await axios.get(
           "http://localhost:5000/api/user/" + localStorage.getItem("userId")

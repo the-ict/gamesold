@@ -36,9 +36,11 @@ app.use(passport.session());
 app.use(express.urlencoded({ extended: true })); // ✅ MUHIM
 app.use("/upload", express.static(path.join(__dirname, "upload")));
 
+console.log("static folders:", path.join(__dirname, "upload"))
+
 // the configuration of multer
-const uploadPathName = path.join(__dirname, "dist", "upload");
-console.log(uploadPathName);
+const uploadPathName = path.join(__dirname, "upload");
+console.log("uploadPathname: ", uploadPathName);
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
