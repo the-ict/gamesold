@@ -1,12 +1,23 @@
 import express from "express";
-import Conversation from "../models/Conversation";
+import Conversation, { IConversation } from "../models/Conversation";
+import UserAccount from "../models/UserAccount";
 
 const router = express.Router();
 
 // create a new conversation
 router.post("/", async (req, res) => {
   try {
+    const { members }: IConversation = req.body
     const newConversation = await Conversation.create(req.body);
+
+    members.forEach(async (member) => {
+      await UserAccount.findByIdAndUpdate(member, {
+        $push: {
+          chats: newConversation._id
+        }
+      })
+    });
+
     res.status(201).json(newConversation);
   } catch (error) {
     res.status(500).json({ error: "Failed to create conversation" });

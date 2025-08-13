@@ -78,6 +78,8 @@ export default function Dashboard() {
           if (res.data) {
             setUserId(res.data._id);
           }
+
+          window.location.reload()
         } catch (error) {
           alert(error);
         }

@@ -1,6 +1,6 @@
 import mongoose, { Document } from "mongoose";
 
-interface IConversation extends Document {
+export interface IConversation extends Document {
   members: string[];
 }
 
