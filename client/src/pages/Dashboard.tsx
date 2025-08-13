@@ -153,7 +153,7 @@ export default function Dashboard() {
             >
               {user.image.includes("google") ? (
                 <img
-                  src={user.profile_pic}
+                  src={user.image}
                   alt="hallo"
                   className="w-[100%] h-[100%] rounded-full cursor-pointer"
                 />
@@ -238,7 +238,7 @@ export default function Dashboard() {
             <div className="flex items-center gap-5">
               <img
                 src={
-                  user.profile_pic ? user.profile_pic : user.image ? IMAGE_URL + user.image : UserProfile
+                  user.image ? user.image : user.image ? IMAGE_URL + user.image : UserProfile
                 }
                 className="w-20 h-20 rounded-full cursor-pointer"
                 alt="What up nigga!"

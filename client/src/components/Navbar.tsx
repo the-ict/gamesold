@@ -62,9 +62,9 @@ export default function Navbar() {
             }
             <Link to={`/dashboard`}>
               {
-                user?.profile_pic && (
-                  user?.profile_pic.includes("google") ? (
-                    <img src={user.profile_pic} alt="Google profile image" className={"w-[35px] h-[35px] object-cover cursor-pointer rounded-full"} />
+                user?.image && (
+                  user?.image.includes("google") ? (
+                    <img src={user.image} alt="Google profile image" className={"w-[35px] h-[35px] object-cover cursor-pointer rounded-full"} />
                   ) : (
                     <img src={"http://localhost:5000/" + user.image} className={"w-[35px] h-[35px] object-cover cursor-pointer rounded-full"} alt="" />
                   )
