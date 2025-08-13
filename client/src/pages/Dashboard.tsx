@@ -24,7 +24,7 @@ console.log("image url", IMAGE_URL)
 export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = React.useState<boolean>(false);
   const [newAccountOpen, setNewAccountOpen] = React.useState<boolean>(false);
-  const [route, setRoute] = useState<"Saqlanganlar" | "Hisob" | "Haqida">(
+  const [route, setRoute] = useState<"Saqlanganlar" | "Hisob" | "Haqida" | "Hisoblar">(
     "Hisob"
   );
   const [loader, setLoader] = React.useState<boolean>(false);
@@ -104,9 +104,67 @@ export default function Dashboard() {
     }
   }, []);
 
-  const handleNewAccount = async () => {
-    console.log("Hello world!")
-  };
+  const handleNewAccount = async (): Promise<void> => {
+    if (accountInformation.price < 0) return alert("Narx 0 dan kichik bo'lishi mumkin emas")
+    if (accountInformation.name === "") return alert("Name kiriting")
+    if (accountInformation.description === "") return alert("Description kiriting")
+    if (!imageFile[0]?.name) return alert("Rasm qo'shing")
+    if (!videoFile[0]?.name) return alert("Video qo'shing")
+
+    const newGameAccount: IGameAccount = {
+      ...accountInformation,
+      image: "",
+      video: "",
+    };
+
+    if (imageFile) {
+      const formData = new FormData();
+      formData.append("file", imageFile[0]);
+
+      try {
+        const response = await axios.post(
+          "http://localhost:5000/upload",
+          formData
+        )
+
+        if (response.data) newGameAccount.image = imageFile[0].name;
+
+      } catch (error) {
+        console.log("uploading error...", error)
+      }
+    }
+
+    if (videoFile) {
+      const formData = new FormData();
+      formData.append("file", videoFile[0]);
+
+      try {
+        const response = await axios.post(
+          "http://localhost:5000/upload",
+          formData
+        )
+
+        if (response.data) newGameAccount.video = videoFile[0].name;
+
+      } catch (error) {
+        console.log("uploading error...", error)
+      }
+    };
+
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/game",
+        newGameAccount
+      )
+
+     if(response.data) {
+      window.location.replace("/account/" + response.data._id)
+     }
+    } catch (error) {
+      console.log("responsing error...", error)
+    }
+
+  }
 
   const handleEdit = async () => {
     if (editingAccount.oldPassword !== user.password)
@@ -473,6 +531,12 @@ export default function Dashboard() {
             >
               Saqlanganlar
             </li>
+            <li
+              className="cursor-pointer border-b-2 border-gray-200"
+              onClick={() => setRoute("Hisoblar")}
+            >
+              Hisoblaringiz
+            </li>
           </ul>
         </div>
       </div>
@@ -481,6 +545,7 @@ export default function Dashboard() {
         <div className="w-[1200px] h-max rounded-2xl shadow-lg p-5 mt-[130px]">
           {route === "Hisob" && <DashboardContent user={user} />}
           {route === "Saqlanganlar" && <SavedItems user={user} />}
+          {route === "Hisoblar" && <Accounts user={user}/>}
         </div>
       </div>
       <Footer />
@@ -588,6 +653,60 @@ function SavedItems({ user }: { user: IUser }) {
     <>
       <h1 className="text-white text-2xl border-b-2 border-[#1e1f28] w-full">
         Saqlangan accountlar
+      </h1>
+      <div className="mt-5 flex items-center gap-5 flex-wrap">
+        {savedItems.length > 0 &&
+          savedItems.map((item) => (
+            <Link to={`/account/${item._id}`} key={item._id}>
+              <div className="w-[270px] relative border h-[300px] p-2 rounded">
+                <img
+                  className="w-full h-full object-contain cursor-pointer hover:blur-[5px] transition-all duration-300 ease-in-out"
+                  src={IMAGE_URL + item.image}
+                  alt=""
+                />
+                <p className="absolute bottom-0 left-0 right-0 text-center w-full bg-gray-200 text-black py-3">
+                  {currencyFormatter(item.price)}
+                </p>
+              </div>
+            </Link>
+          ))}
+      </div>
+    </>
+  );
+}
+
+
+
+function Accounts({ user }: { user: IUser }) {
+  const [savedItems, setSavedItems] = useState<IGameAccount[]>([]);
+
+  useEffect(() => {
+
+    console.log("accounts user: ", user)
+    const getSavedAccounts = async () => {
+      try {
+        const responses = await Promise.all(
+          user.accounts.map((accountId: string) =>
+            axios.get("http://localhost:5000/api/game/" + accountId)
+          )
+        );
+
+        const accounts = responses.map((res) => res.data);
+        setSavedItems(accounts);
+      } catch (error) {
+        console.error("Error fetching saved accounts:", error);
+      }
+    };
+
+    if (user?.accounts?.length > 0) {
+      getSavedAccounts();
+    }
+  }, [user.accounts]);
+
+  return (
+    <>
+      <h1 className="text-white text-2xl border-b-2 border-[#1e1f28] w-full">
+        Sizning hisoblaringiz
       </h1>
       <div className="mt-5 flex items-center gap-5 flex-wrap">
         {savedItems.length > 0 &&

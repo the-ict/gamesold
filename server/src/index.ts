@@ -46,26 +46,35 @@ const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, uploadPathName);
   },
-  filename: (req: any, file, cb) => {
-    cb(null, `${file.originalname}`);
-  },
-});
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
+  }
+})
 
 const upload = multer({ storage });
 
 app.post("/upload", upload.single("file"), (req: Request, res: Response) => {
   try {
-    console.log(req.file); // Fayl haqida info
-    res.send("File uploaded successfully");
+    console.log(req.file);
+    res.json(
+      {
+        message: "File uploaded successfully",
+        file: req.file,
+      },
+    ).status(200);
   } catch (error) {
-    console.error(error);
-    res.status(500).send("There's an error during upload");
+    res.status(500).json({
+      message: "There's an error during upload",
+      error,
+    });
   }
 });
 
 const PORT = process.env.PORT || 5000;
 const MONGO_URI =
   process.env.MONGO_URI || "mongodb://localhost:27017/game-accounts";
+
+
 const connectDB = async () => {
   try {
     await mongoose.connect(MONGO_URI);
@@ -108,12 +117,7 @@ app.get("/google/me", (req: any, res: Response) => {
   }
 });
 
-// app.use((req: Request, res: Response, next: Function) => {
-//   console.log(`${req.method} ${req.url}`);
-//   next();
-// });
 
-// importing routes
 const conversationRoutes = require("./routes/Conversation");
 const userAccountRoutes = require("./routes/UserAccount");
 const gameAccountRoutes = require("./routes/GameAccount");
@@ -126,11 +130,6 @@ app.use("/api/user", userAccountRoutes);
 app.use("/api/message", messageRoutes);
 app.use("/api/auth", authRoutes);
 
-// app.get('/logout', (req: Request, res: Response) => {
-//   req.logout(() => {
-//     res.sendStatus(200);
-//   });
-// });
 
 app.listen(PORT, () => {
   console.log(`Listening on: ${PORT}`);

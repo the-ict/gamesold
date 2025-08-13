@@ -1,10 +1,6 @@
 import {
   FaArrowLeft,
   FaArrowRight,
-  FaDiscord,
-  FaFacebook,
-  FaInstagram,
-  FaTwitter,
 } from "react-icons/fa";
 import Navbar from "../components/Navbar";
 import { GrFavorite } from "react-icons/gr";
@@ -12,7 +8,6 @@ import Footer from "../components/Footer";
 import { BiLocationPlus, BiMessage } from "react-icons/bi";
 import SidebarDrawer from "@/components/SidebarDrawer";
 import { useEffect, useState } from "react";
-import AccountImage from "@/assets/background.jpeg";
 import UserAvatar from "@/assets/profile-avatar.svg";
 import AreYouSure from "@/components/AreYouSure";
 import { useLocation } from "react-router-dom";
@@ -21,6 +16,7 @@ import type { IGameAccount } from "@/types/GameAccount";
 import { currencyFormatter } from "@/components/Trending";
 import type { IUser } from "@/types/User";
 import ReactPlayer from "react-player";
+import useStore from "../store";
 
 const IMAGE_URL = import.meta.env.VITE_PC;
 
@@ -33,6 +29,8 @@ export default function SingleAccount() {
   const [user, setUser] = useState<IUser>({} as any);
 
   const location = useLocation();
+  const { userId } = useStore()
+
 
   useEffect(() => {
     const accountId = location.pathname.split("/")[2];
@@ -179,6 +177,18 @@ export default function SingleAccount() {
       console.log(error);
     }
   };
+
+
+  const handledeleteAccount = async () => {
+    try {
+      const response = await axios.delete("http://localhost:5000/api/game/" + accountInfo._id)
+      if (response.data) window.location.replace("/dashboard")
+    } catch (error) {
+      console.log("deleting error", error)
+    }
+  }
+
+
   return (
     <>
       <Navbar />
@@ -227,8 +237,8 @@ export default function SingleAccount() {
                   user.image.includes("google")
                     ? user.image
                     : user.image
-                    ? `${IMAGE_URL}${user.image}`
-                    : UserAvatar
+                      ? `${IMAGE_URL}${user.image}`
+                      : UserAvatar
                 }
                 alt=""
               />
@@ -272,7 +282,7 @@ export default function SingleAccount() {
           </div>
         </SidebarDrawer>
       )}
-      <div className="flex items-center justify-center bg-[#141414] text-white">
+      <div className="flex gap-10 justify-center bg-[#141414] text-white min-h-[100vh]">
         <div className="w-[1200px] mt-10">
           <div className="flex gap-10">
             <div className="w-[45%] h-[300px]">
@@ -302,7 +312,7 @@ export default function SingleAccount() {
                 </div>
                 <div className="flex items-center gap-5">
                   {user.savedAccounts &&
-                  user.savedAccounts.includes(String(accountInfo._id)) ? (
+                    user.savedAccounts.includes(String(accountInfo._id)) ? (
                     <GrFavorite
                       size={25}
                       className="cursor-pointer text-red-500"
@@ -315,30 +325,39 @@ export default function SingleAccount() {
                       onClick={saveAccount}
                     />
                   )}
-                  <BiMessage
-                    size={25}
-                    className="cursor-pointer"
-                    onClick={openConversation}
-                  />
+                  {
+                    userId !== authorAccount._id && (
+                      <BiMessage
+                        size={25}
+                        className="cursor-pointer"
+                        onClick={openConversation}
+                      />
+                    )
+                  }
                 </div>
               </div>
               <p className="mt-3 w-[600px] line-clamp-4">{accountInfo.name}</p>
               <div className="flex items-center gap-2 mt-5">
-                <span
-                  onClick={() => {
-                    if (accountInfo.status === "sold") return;
-                    setSidebarOpen(true);
-                  }}
-                  className={`${
-                    accountInfo.status === "sold"
-                      ? "bg-red-500"
-                      : "bg-green-500"
-                  } p-2 border font-bold px-5 cursor-pointer text-white rounded-[10px]`}
-                >
-                  {accountInfo.status !== "sold"
-                    ? currencyFormatter(accountInfo.price)
-                    : "Sotildi"}
-                </span>
+                {
+                  userId === authorAccount._id ? (
+                    <button onClick={handledeleteAccount} className="bg-red-500 px-5 transition hover:bg-red-600 py-2 cursor-pointer rounded-2xl ">Sotishni bekor qilish</button>
+                  ) : (
+                    <span
+                      onClick={() => {
+                        if (accountInfo.status === "sold") return;
+                        setSidebarOpen(true);
+                      }}
+                      className={`${accountInfo.status === "sold"
+                        ? "bg-red-500"
+                        : "bg-green-500"
+                        } p-2 font-bold px-5 cursor-pointer text-white rounded-[10px]`}
+                    >
+                      {accountInfo.status !== "sold"
+                        ? currencyFormatter(accountInfo.price)
+                        : "Sotildi"}
+                    </span>
+                  )
+                }
               </div>
               <div className="flex items-center gap-2 text-gray-400 mt-5">
                 {accountInfo.region}
@@ -352,38 +371,6 @@ export default function SingleAccount() {
             dangerouslySetInnerHTML={{ __html: accountInfo.description }}
           />
 
-          <h1 className="text-3xl font-bold mt-10 mb-10 min-h-[40vh]">
-            {authorAccount.name}ning boshqa sotuv akkountlari{" "}
-            {Array.isArray(authorAccount.accounts) &&
-              authorAccount.accounts.length === 0 &&
-              "Topilmadi"}
-          </h1>
-
-          {Array.isArray(authorAccount.accounts) &&
-            authorAccount.accounts.length > 0 && (
-              <div className="max-w-full relative flex py-10 overflow-x-hidden">
-                <FaArrowLeft
-                  size={25}
-                  className="absolute left-0 top-1/2 -translate-y-1/2 cursor-pointer"
-                />
-                <div className="flex items-center gap-5 mt-10">
-                  <div className="w-[500px] relative border h-[400px]">
-                    <img
-                      className="w-full h-full object-contain cursor-pointer hover:blur-[5px] transition-all duration-300 ease-in-out"
-                      src="https://www.g2g.com/img/affiliate-home.webp"
-                      alt=""
-                    />
-                    <p className="absolute bottom-0 left-0 right-0 text-center w-full bg-black text-white py-3">
-                      narxi: 100$
-                    </p>
-                  </div>
-                </div>
-                <FaArrowRight
-                  size={25}
-                  className="absolute right-0 top-1/2 -translate-y-1/2 cursor-pointer"
-                />
-              </div>
-            )}
         </div>
       </div>
       <Footer />

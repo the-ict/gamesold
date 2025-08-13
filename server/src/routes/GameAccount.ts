@@ -93,7 +93,12 @@ router.delete(
   "/:id",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
+      const gameAccount = await GameAccount.findById(req.params.id)
       const deleted = await GameAccount.findByIdAndDelete(req.params.id);
+      await UserAccount.findByIdAndUpdate(gameAccount?.author, {
+        $pull: { accounts: req.params.id },
+      });
+
       if (deleted) {
         res.status(204).send("Game account deleted successfully");
       } else {
